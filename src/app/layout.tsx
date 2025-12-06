@@ -25,7 +25,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           target="_blank"
           rel="noopener noreferrer"
           href="https://www.mixcloud.com/dublabes/subscribe/"
-          className="fixed bottom-16 z-50 left-2 p-2  bg-white border border-black rounded hover:bg-gray-200 text-sm md:text-base"
+          className="fixed bottom-16 z-40 left-2 p-2  bg-white border border-black rounded hover:bg-gray-200 text-sm md:text-base"
         >
           Donate
         </Link>

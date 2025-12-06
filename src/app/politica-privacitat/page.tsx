@@ -12,8 +12,8 @@ const PrivacyDisclaimer = () => {
         </div>
         <p>
           La present política de privacitat estableix els termes en els quals
-          dublab.es usa i protegeix la informació que és proporcionada pels seus
-          usuaris en el moment d'utilitzar el seu lloc web. A dublab.es tenim el
+          dublab.cat usa i protegeix la informació que és proporcionada pels seus
+          usuaris en el moment d'utilitzar el seu lloc web. A dublab.cat tenim el
           compromís de vetllar per la seguretat de les dades dels nostres
           usuaris. Quan et demanem omplir els camps d'informació personal amb la
           qual puguis ser identificat, ho fem verificant que només s'emprarà
@@ -39,7 +39,7 @@ const PrivacyDisclaimer = () => {
           proporcions i podran ser cancellats en qualsevol moment.
         </p>
         <p>
-          A dublab.es ens comprometem a mantenir la teva informació segura. Usem
+          A dublab.cat ens comprometem a mantenir la teva informació segura. Usem
           els sistemes més avançats i els actualitzem de forma regular per a
           assegurar-nos que no existeixi cap accés no autoritzat.
         </p>
@@ -95,7 +95,7 @@ const PrivacyDisclaimer = () => {
           Aquesta companyia no vendrà, cedirà ni distribuirà la informació
           personal que és recopilada sense el teu consentiment, tret que sigui
           requerit per les autoritats a través d'una ordre judicial. CGC MEDIA /
-          dublab.es es reserva el dret de canviar els termes de la present
+          dublab.cat es reserva el dret de canviar els termes de la present
           política de privacitat en qualsevol moment.
         </p>
       </section>

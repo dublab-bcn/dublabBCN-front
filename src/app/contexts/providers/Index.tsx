@@ -5,8 +5,10 @@ import AudioProvider from "../AudioContext";
 import { RadioDataProvider } from "../RadioDataContext";
 import { SpinnerProvider } from "../SpinnerContext";
 import { SlideOverProvider } from "../SlideOverContext";
+import { MixCloudProvider } from "../MixCloudContext"; 
 import Header from "@/app/components/Header/Header";
 import Footer from "@/app/components/Footer/Footer";
+import QueueDisplay from "@/app/components/MixCloudQueue/MixCloudQueu";
 
 interface AppProviderprops {
   children: React.ReactNode;
@@ -16,14 +18,17 @@ const AppProvider = ({ children }: AppProviderprops) => {
   return (
     <AudioProvider>
       <SpinnerProvider>
-        <RadioDataProvider>
-          <RadioBar />
-          <SlideOverProvider>
-            <Header />
-            {children}
-            <Footer />
-          </SlideOverProvider>
-        </RadioDataProvider>
+        <MixCloudProvider>
+          <RadioDataProvider>
+            <RadioBar />
+            <SlideOverProvider>
+              <Header />
+              {children}
+              <QueueDisplay />
+              <Footer />
+            </SlideOverProvider>
+          </RadioDataProvider>
+        </MixCloudProvider>
       </SpinnerProvider>
     </AudioProvider>
   );

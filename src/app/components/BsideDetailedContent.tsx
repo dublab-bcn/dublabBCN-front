@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Button from "./Button";
 import Tracklist from "./Tracklist";
+import { useMixCloud } from "@/app/contexts/MixCloudContext";
 
 interface BsideInfoProps {
   showUrl: string;
@@ -18,20 +19,24 @@ const BsideInfo = ({
   tags,
   tracklist,
 }: BsideInfoProps) => {
-  const [iFrameShow, setIFrameShow] = useState("");
+  const { playProgram , addToQueu } = useMixCloud();
   const [isPlaying, setIsPLaying] = useState(false);
 
   const listenToBside = (mixcloudLink: string) => {
-    setIFrameShow(mixcloudLink);
+    playProgram(mixcloudLink);
     setIsPLaying(!isPlaying);
+  };
+
+  
+  const addToQueueInShow = (mixcloudLink: string, showName: string) => {
+    addToQueu(mixcloudLink, showName);
   };
 
   return (
     <>
-      <section className="sm:max-h-[750px] max-h-fit  scrollbar-hide  bg-black">
-        <div className="flex justify-between items-end p-5 ">
-          <ul className="flex">
-            <li className="flex gap-2 leading-normal">
+      <section className="md:max-h-[700px] px-4 sm:w-[100vw] overflow-scroll scrollbar-hide sm:pr-[2rem] bg-black">
+        <div className="flex sm:flex-row flex-col  justify-between items-start sm:items-end">
+          <div className="flex gap-[20px] group">
               <Button
                 className="uppercase flex flex-row gap-2"
                 actionOnClick={() => listenToBside(showUrl)}
@@ -46,9 +51,15 @@ const BsideInfo = ({
                   <span>►</span>
                 )}
               </Button>
-            </li>
+              <span></span>
+              <Button
+                  className="uppercase"
+                  actionOnClick={() => addToQueueInShow(showUrl, name)}
+              >
+                + Add to queue
+              </Button>
             <span className="loader"></span>
-          </ul>
+          </div>
           {tags && (
             <ul className="flex gap-[10px] opacity-40 mr-4 sm:mr-8">
               {tags.map((tag, index) => (
@@ -62,26 +73,15 @@ const BsideInfo = ({
             </ul>
           )}
         </div>
-        <section className=" p-5 pt-1 gap-[140px]">
-          <h2 className="text-5xl h-[58px]">{name}</h2>
-          <div
-            dangerouslySetInnerHTML={description}
-            className=" text-xs sm:text-sm sm:max-w-[750px] mt-3   "
-          />
+        <section className="w-fit">
+          <h2 className="text-5xl sm:h-[58px] mt-[56px]">
+            {name}
+          </h2>
         </section>
         <section className="flex-col items-end">
           {tracklist && <Tracklist tracklist={tracklist} />}
         </section>
       </section>
-      {iFrameShow && (
-        <iframe
-          title="Programa de radio seleccionat"
-          className="sm:w-screen w-screen  fixed bottom-0 left-0"
-          height="60"
-          allow="autoplay"
-          src={`https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&autoplay=1&feed=/${iFrameShow}`}
-        ></iframe>
-      )}
     </>
   );
 };

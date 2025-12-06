@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dnd-kit/sortable": "^10.0.0",
     "@headlessui/react": "^1.7.17",
     "@netlify/plugin-nextjs": "^5.14.5",
     "@types/he": "^1.2.3",

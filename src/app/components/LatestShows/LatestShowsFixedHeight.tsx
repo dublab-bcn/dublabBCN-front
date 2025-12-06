@@ -3,6 +3,7 @@ import { Bside, RadioApiShow } from "@/app/types";
 import { useState } from "react";
 import BsideCard from "./BsideCard";
 import ShowCard from "./ShowCard";
+import { useMixCloud } from "@/app/contexts/MixCloudContext"; 
 
 interface LatestShowsFixedHeightProps {
   latestShows: RadioApiShow[] | Bside[];
@@ -11,10 +12,9 @@ interface LatestShowsFixedHeightProps {
 const LatestShowsFixedHeight = ({
   latestShows,
 }: LatestShowsFixedHeightProps) => {
-  const [iFrameShow, setIFrameShow] = useState("");
-
+  const { playProgram } = useMixCloud();
   const handleCardShow = (showFromCard: string) => {
-    setIFrameShow(showFromCard);
+    playProgram(showFromCard);
   };
 
   return (
@@ -41,15 +41,6 @@ const LatestShowsFixedHeight = ({
           </li>
         ))}
       </ul>
-      {iFrameShow && (
-        <iframe
-          title="Programa de radio seleccionat"
-          className="sm:w-[800px] w-screen fixed bottom-0 left-0"
-          height="60"
-          allow="autoplay"
-          src={`https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&autoplay=1&feed=/${iFrameShow}`}
-        ></iframe>
-      )}
     </section>
   );
 };

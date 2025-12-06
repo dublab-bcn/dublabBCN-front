@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "../Button";
 import Tracklist from "../Tracklist";
 import ProfileLinks from "./ProfileLinks";
 import { usePathname } from "next/navigation";
+import { useMixCloud, QueuItem} from "@/app/contexts/MixCloudContext";
 
 interface ShowByDataInfoProps {
   showUrl: string;
@@ -24,13 +25,18 @@ const ShowByDataInfo = ({
   tracklist,
   links,
 }: ShowByDataInfoProps) => {
-  const [iFrameShow, setIFrameShow] = useState("");
+  const { playProgram, addToQueu } = useMixCloud();
   const [isPlaying, setIsPLaying] = useState(false);
 
   const listenShow = (mixcloudLink: string) => {
-    setIFrameShow(mixcloudLink);
+    playProgram(mixcloudLink);
     setIsPLaying(!isPlaying);
   };
+
+  const addToQueueInShow = (mixcloudLink: string, showName: string) => {
+    addToQueu(mixcloudLink, showName);
+  };
+
 
   const pathname = usePathname();
 
@@ -44,26 +50,35 @@ const ShowByDataInfo = ({
     <>
       <section className="md:max-h-[700px] px-4 sm:w-[100vw] overflow-scroll scrollbar-hide sm:pr-[2rem]">
         <div className="flex sm:flex-row flex-col  justify-between items-start sm:items-end">
-          <Button
-            className="uppercase flex flex-row gap-2"
-            actionOnClick={() => listenShow(showUrl)}
-          >
-            {isPlaying ? (
-              <div className="flex flex-row gap-1 pb-2">
-                <div
-                  className={`h-3 w-[2px] bg-${lineColor} animate-moveLines`}
-                />
-                <div
-                  className={`h-3 w-[2px] bg-${lineColor} animate-moveLines delay-500`}
-                />
-                <div
-                  className={`h-3 w-[2px] bg-${lineColor} animate-moveLines delay-1000`}
-                />
-              </div>
-            ) : (
-              <span>►</span>
-            )}
-          </Button>
+          <div className="flex gap-[20px] group">
+            <Button
+                className="uppercase"
+                actionOnClick={() => listenShow(showUrl)}
+              >
+                {isPlaying ? (
+                  <div className="flex flex-row gap-1 pb-2">
+                    <div
+                      className={`h-3 w-[2px] bg-${lineColor} animate-moveLines`}
+                    />
+                    <div
+                      className={`h-3 w-[2px] bg-${lineColor} animate-moveLines delay-500`}
+                    />
+                    <div
+                      className={`h-3 w-[2px] bg-${lineColor} animate-moveLines delay-1000`}
+                    />
+                  </div>
+                ) : (
+                  <span>►</span>
+                )}
+            </Button>
+            <span></span>
+            <Button
+                className="uppercase"
+                actionOnClick={() => addToQueueInShow(showUrl, profileName + " " + firstDateElement)}
+            >
+              + Add to queue
+            </Button>
+          </div>
           <ul className="flex gap-[10px] pr-4 opacity-100 sm:opacity-80">
             {tags &&
               tags.map((tag, index) => (
@@ -103,15 +118,6 @@ const ShowByDataInfo = ({
           <Tracklist tracklist={tracklist!}></Tracklist>
         </section>
       </section>
-      {iFrameShow && (
-        <iframe
-          title="Programa de radio seleccionat"
-          className=" w-screen fixed bottom-0 left-0"
-          height="60"
-          allow="autoplay"
-          src={`https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&autoplay=1&feed=/${iFrameShow}`}
-        ></iframe>
-      )}
     </>
   );
 };

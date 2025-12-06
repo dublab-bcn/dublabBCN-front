@@ -2,12 +2,15 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
+import Image from "next/image";
 import { useAudio } from "@/app/contexts/useContexts";
+import { useMixCloud } from "@/app/contexts/MixCloudContext";
 
 export const streamingSource = "https://dublabbcn.out.airtime.pro/dublabbcn_a";
 
 const AudioPlayer = () => {
   const { audio, setAudio } = useAudio();
+  const { randomProgram } = useMixCloud();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -47,13 +50,28 @@ const AudioPlayer = () => {
           className="group-hover:visible invisible z-40 absolute mt-2 mr-10 appearance-none bg-white w-[180px] h-[7px] overflow-hidden"
         />
       </div>
-      <Button
-        actionOnClick={togglePlay}
-        className="uppercase z-20 min-w-[42px] text-sm"
-      >
-        {isPlaying ? "Pause" : "Play"}
-      </Button>
+      <div className="flex gap-[20px] group">
+        <Button
+                actionOnClick={togglePlay}
+                className="uppercase z-20 min-w-[42px] text-sm"
+              >
+                {isPlaying ? "Pause" : "Play"}
+        </Button>
+        <button
+          type="button" 
+          onClick={() => randomProgram()}
+          className="uppercase z-20 min-w-[42px]"
+         >
+            <Image src={"/assets/random.svg"}
+                    width={20.0}
+                    height={20.0}
+                    alt={"D-B"}
+            ></Image>
+      </button>
+      </div>
+      
     </div>
+    
   );
 };
 
