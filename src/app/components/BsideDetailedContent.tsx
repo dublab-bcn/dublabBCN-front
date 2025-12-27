@@ -14,7 +14,6 @@ interface BsideInfoProps {
 
 const BsideInfo = ({
   showUrl,
-  description,
   name,
   tags,
   tracklist,

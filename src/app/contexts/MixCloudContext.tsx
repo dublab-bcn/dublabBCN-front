@@ -27,7 +27,6 @@ const MixCloudContext = createContext<MixCloudContextType | undefined>(undefined
 export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
   const [iFrameShow, setIFrameShow] = useState(false);
   const { getLatestsShowsData } = useDublabApi();
-  const widgetRef = useRef(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [queu, setQueu] = useState<QueuItem[]>([]);
   const [mixcloudLink, setMixcloudLink] = useState("");
@@ -48,8 +47,8 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initWidget = () => {
-      if (!iframeRef.current || !(window as any).Mixcloud?.PlayerWidget) return;
-      const widget = (window as any).Mixcloud.PlayerWidget(iframeRef.current);
+      if (!iframeRef.current || !window.Mixcloud?.PlayerWidget) return;
+      const widget = window.Mixcloud.PlayerWidget(iframeRef.current);
       widget.ready.then(() => {
         if (widget.events && widget.events.ended) {
           widget.events.ended.on(() => {
@@ -60,7 +59,7 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
       });
     };
 
-    if (!(window as any).Mixcloud) {
+    if (!window.Mixcloud) {
       const s = document.createElement("script");
       s.src = "https://widget.mixcloud.com/media/js/widgetApi.js";
       s.async = true;
@@ -88,7 +87,7 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
     setIFrameShow(true);
   };
 
-  const randomNumberInRange = (min, max) => {
+  const randomNumberInRange = (min: number, max: number) => {
         return Math.floor(Math.random()
             * (max - min + 1)) + min;
     };
@@ -99,7 +98,6 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
     const { results: latestShows } = await getLatestsShowsData(randomPage);
     const randomShow = latestShows[randomShowIndex];
     const showUrl = extractUrlForEmbedPlayer(randomShow.mixcloud_url);
-    console.log("Random show URL:", showUrl);
     playProgram(showUrl);
   };
 

@@ -1,6 +1,6 @@
 "use client";
 import useMobileComponent from "@/app/lib/hooks/useMobileComponent";
-import { ApiBsidesList, ApiProfilesList } from "@/app/types";
+import { ApiProfile, Bside } from "@/app/types";
 import { usePathname } from "next/navigation";
 import ProfilesList from "../Profiles/ProfilesList";
 import ProfilesListMobile from "../Profiles/ProfilesListMobile";
@@ -8,7 +8,7 @@ import LoadMoreBsides from "./LoadMoreBsides";
 import { useSlideOver } from "@/app/contexts/useContexts";
 
 interface ResponsiveMobileProfileList {
-  podcastsList: ApiBsidesList | ApiProfilesList;
+  podcastsList: ApiProfile[] | Bside[];
 }
 
 const ResponsiveProfilesList = ({
@@ -24,9 +24,9 @@ const ResponsiveProfilesList = ({
       {!isOpen && (
         <>
           {mobileComponent ? (
-            <ProfilesListMobile seasonProfiles={podcastsList!.results} />
+            <ProfilesListMobile seasonProfiles={podcastsList} />
           ) : (
-            <ProfilesList profilesOrBsides={podcastsList!.results} />
+            <ProfilesList profilesOrBsides={podcastsList} />
           )}
           {!isShows && <LoadMoreBsides isMobile={mobileComponent} />}
         </>

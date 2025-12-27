@@ -10,12 +10,12 @@ const Tags = ({ tags, isShows }: TagProps) => {
     <>
       {tags && (
         <ul
-          className={`ml-4 h-4  gap-[10px] text-[11px] flex-row py-4 pt-[32px] absolute  flex items-center`}
+          className={`flex flex-wrap gap-2 mt-2`}
         >
           {tags.map((tag) => (
             <>
               <li
-                className={`bg-${backgroundColor} border-solid border-[1px] z-30 border-slate-600 rounded-md h-6 min-w-fit flex items-center pt-[3px] px-3`}
+                className={`bg-${backgroundColor} border border-slate-600 rounded-md px-3 py-1 text-xs`}
                 key={tag}
               >
                 {tag}

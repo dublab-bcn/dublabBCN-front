@@ -1,10 +1,10 @@
 "use client";
-import { useState, useContext } from "react";
+import { useState} from "react";
 import Button from "../Button";
 import Tracklist from "../Tracklist";
 import ProfileLinks from "./ProfileLinks";
 import { usePathname } from "next/navigation";
-import { useMixCloud, QueuItem} from "@/app/contexts/MixCloudContext";
+import { useMixCloud} from "@/app/contexts/MixCloudContext";
 
 interface ShowByDataInfoProps {
   showUrl: string;

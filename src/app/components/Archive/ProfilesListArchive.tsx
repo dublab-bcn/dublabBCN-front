@@ -7,15 +7,13 @@ interface ProfilesListProps {
 
 const ProfilesListArchive = ({ profilesOrBsides }: ProfilesListProps) => {
   return (
-    <div className="px-[31px] mt-8 max-w-[100vw] ">
-      <ul className="grid sm:grid-cols-3 lg:grid-cols-4 gap-x-14 gap-y-14 sm:place-items-center  ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 ">
         {profilesOrBsides.map((profile) => (
-          <li className="" key={profile.slug}>
+          <div key={profile.slug} className="px-4">
             <ProfileCard profile={profile} height={"200px"} />
-          </li>
+          </div>
         ))}
-      </ul>
-    </div>
+      </div>
   );
 };
 

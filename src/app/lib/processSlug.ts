@@ -1,4 +1,5 @@
 import { RadioApiShow } from "../types";
+import extractUrlForEmbedPlayer from "@/app/lib/extractUrlForEmbedPlayer";
 
 export const formatSlugToGetShowName = (slug: string): string => {
   if (slug.substring(0, 12) === "macguffin-20") {
@@ -59,7 +60,7 @@ const removeDateAndHyphenFromSlug = (slug: string) => {
 };
 
 export const formatAndSortRelatedShowsInfo = (shows: RadioApiShow[]) => {
-  const formattedShows = shows.map(({ slug, tags, tracklist, name, host }) => {
+  const formattedShows = shows.map(({ slug, tags, tracklist, name, host, mixcloud_url}) => {
     const showName = formatSlugToGetShowName(slug);
     const showDateForShowList = extractDatesForShowList(slug);
     const showDateForUrl = extractDatesForUrl(slug);
@@ -68,6 +69,7 @@ export const formatAndSortRelatedShowsInfo = (shows: RadioApiShow[]) => {
     const showTitle = name;
     const showHost = host;
     const showTracklist = tracklist;
+    const showMixcloudUrl = extractUrlForEmbedPlayer(mixcloud_url);
     const slugToUrl = removeDateAndHyphenFromSlug(slug);
 
     return {
@@ -80,6 +82,7 @@ export const formatAndSortRelatedShowsInfo = (shows: RadioApiShow[]) => {
       showTags,
       showDateForUrl,
       showDateForList,
+      showMixcloudUrl,
     };
   });
 

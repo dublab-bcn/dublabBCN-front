@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
 import localfont from "next/font/local";
 import AppProvider from "./contexts/providers/Index";
 import "./globals.css";
@@ -20,7 +19,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html lang="ca">
       <body className={`${favorit.variable} font-favorit antialiased`}>
         <AppProvider>{children}</AppProvider>
-        <Analytics />
         <Link
           target="_blank"
           rel="noopener noreferrer"

@@ -5,6 +5,7 @@ import ResponsiveProfilesList from "../components/Bsides/ResponsiveProfileList";
 import Spinner from "../components/ui/Spinner";
 import getProfilesOrBsides from "../lib/getShowsOrBsides";
 import useDublabApi from "../lib/hooks/useDublabApi";
+import {ApiProfilesList, ApiProfile} from "@/app/types";
 
 export const metadata: Metadata = {
   title: "Programes",
@@ -20,7 +21,15 @@ const ShowProfiles = async () => {
   const onAirProfiles = await getProfilesOrBsides(getProfiles);
 
   const isAllDataLoaded = onAirProfiles.every((apiProfiles) => apiProfiles);
+  
 
+  const allProfilesList: ApiProfile[] = [];
+
+  onAirProfiles.forEach((profilesList) => {
+    allProfilesList.push(...profilesList.results);
+  });
+
+  
   if (!isAllDataLoaded) return <Spinner />;
 
   return (
@@ -35,9 +44,7 @@ const ShowProfiles = async () => {
         <h2>SHOWS</h2>
       </div>
       <section>
-        {onAirProfiles.map((profiles, index) => (
-          <ResponsiveProfilesList key={index} podcastsList={profiles} />
-        ))}
+        <ResponsiveProfilesList key={0} podcastsList={allProfilesList} />
       </section>
     </main>
   );

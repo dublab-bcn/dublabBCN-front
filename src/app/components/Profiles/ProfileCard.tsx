@@ -40,47 +40,43 @@ const ProfileCard = ({
   const isShows = dynamicPath === "shows";
 
   const showName = formatSlugToGetShowName(slug);
-  const formatedDescription = descriptionFormatting(description);
 
-  const [backgroundColor, setBackgroundColor] = useState("white");
-  const changeBackgroundPath = "/b-sides";
-
-  useEffect(() => {
-    setBackgroundColor(pathname === changeBackgroundPath ? "black" : "white");
-  }, [pathname]);
+  const changeBackgroundPath = ["/b-sides","/arxiu"].includes(pathname);
 
   const defaultImage = picture ? picture : "/assets/default-arxiu.jpg";
 
   return (
-    <article className={`w-[353px] h-[${height}] relative leading-[120%]`}>
-      <div className="block group relative">
-        <div className="group relative brightness-75 hover:brightness-100  ">
-          <img
-            src={defaultImage}
-            alt={`Imatge del programa ${slug}`}
-            className="overflow-hidden sm:h-auto h-[280px] w-[353px] relative transition duration-300 ease-in-out group-hover:opacity-0 object-cover"
-          />
-          <div
-            className={`absolute inset-0 bg-${backgroundColor} bg-opacity-80 transition duration-300 ease-in-out opacity-0 px-4 group-hover:opacity-100`}
-          >
-            <div className="flex flex-col justify-center items-start gap-6 max-w-[320px] ">
-              <p className="text-base mt-2">{formatedDescription}</p>
-              <Link
-                className="text-base h-4 z-10"
-                href={`/${dynamicPath}/${slug}`}
-              >
-                Read more
-              </Link>
+    <a href={`/${dynamicPath}/${slug}`}>
+      <article className="w-full h-full">
+            <div className={"block group relative h-full rounded-xl overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl " + (changeBackgroundPath ? 'shadow-cyan-500/50' : '')}>
+              <div className="relative h-48 sm:h-64 md:h-64 w-full overflow-hidden bg-gray-200">
+                <img
+                  src={defaultImage}
+                  alt={`Imatge del programa ${slug}`}
+                  className="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110"
+                  style={{
+                    maxHeight: '350px',
+                    maxWidth: '100%',
+                  }}
+                />
+              </div>
+              
+              <div className="flex-1 p-4 flex flex-col justify-between">
+              <div>
+                <h1 className="text-xl font-bold mb-2">{showName}</h1>
+                {host && <span className="text-sm text-gray-600">Hosted by {host}</span>}
+              </div>
+              
+                <div className="mt-4">
+                  <Tags tags={tags} isShows={isShows} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 p-4 text-white opacity-100 group-hover:hidden ">
-          <h1 className="text-[1.375rem]">{showName}</h1>
-          {host && <span className="text-sm">Hosted by {host}</span>}
-        </div>
-      </div>
-      <Tags tags={tags} isShows={isShows} />
-    </article>
+
+      </article>
+    </a>
+    
+
   );
 };
 export default ProfileCard;
