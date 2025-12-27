@@ -5,7 +5,7 @@ import ResponsiveProfilesList from "../components/Bsides/ResponsiveProfileList";
 import Spinner from "../components/ui/Spinner";
 import getProfilesOrBsides from "../lib/getShowsOrBsides";
 import useDublabApi from "../lib/hooks/useDublabApi";
-import {ApiProfilesList, ApiProfile} from "@/app/types";
+import {ApiProfile} from "@/app/types";
 
 export const metadata: Metadata = {
   title: "Programes",

@@ -1,11 +1,9 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
-import descriptionFormatting from "@/app/lib/descriptionFormatting";
 import { formatSlugToGetShowName } from "@/app/lib/processSlug";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Tags from "./Tag";
 
 interface Profile {
@@ -23,8 +21,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({
-  profile: { host, picture, tags, slug, description },
-  height,
+  profile: { host, picture, tags, slug },
 }: ProfileCardProps): React.ReactElement => {
   const pathname = usePathname();
   let dynamicPath;
