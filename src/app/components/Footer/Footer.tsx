@@ -5,6 +5,7 @@ import Contact from "./Contact";
 import Credits from "./Credits";
 import LegalLinks from "./LegalLinks";
 import SocialLinks from "./SocialLinks";
+import Sisters from "./Sisters";
 import { usePathname } from "next/navigation";
 
 const Footer = (): React.ReactElement => {
@@ -37,8 +38,11 @@ const Footer = (): React.ReactElement => {
         <li className="w-[197px]">
           <LegalLinks />
         </li>
+        <li className="w-[197px]">
+          <Sisters />
+        </li>
         <li className="min-w-fit mt-[2px] mb-16 sm:hidden  ">
-          Ⓒ 2024 Dublab Barcelona
+          Ⓒ 2025 Dublab Barcelona
         </li>
       </ul>
       <Credits />

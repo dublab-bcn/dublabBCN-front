@@ -39,7 +39,7 @@ const Credits = (): React.ReactElement => {
           <li className="px-4">
             <CreditsSlideOver />
           </li>
-          <li className="min-w-fit px-4">Ⓒ 2024 Dublab Barcelona</li>
+          <li className="min-w-fit px-4">Ⓒ 2025 Dublab Barcelona</li>
           {shouldShowSpan && (
             <li className="max-h-[200px]">
               <span className="hidden sm:block text-[1.5rem] font-thin w-fit">

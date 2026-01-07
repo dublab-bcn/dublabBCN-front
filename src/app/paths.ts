@@ -4,9 +4,11 @@ export interface DropdownItem {
 }
 
 export const firstNavLabels = [
-  //{ label: "Latest", route: "/latest" },
+  { label: "shows", route: "/shows" },
+  { label: "b-sides", route: "/b-sides" },
   { label: "Calendari", route: "/calendari" },
   { label: "Arxiu", route: "/arxiu" },
+  
 ];
 
 export const lastNavLabels: DropdownItem[] = [

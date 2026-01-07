@@ -128,8 +128,8 @@ const RelatedShows = ({ shows }: RelatedShowsProps) => {
                 </section>
                 
               </div>
-              <div className="flex gap-8 justify-between mt-[17px]">
-                  <ul className="flex text-xs pt-[3px] pb-[17px] ">
+              <div className="flex gap-8 justify-between mt-[17px] w-full">
+                  <ul className="flex flex-wrap text-xs pt-[3px] pb-[17px] ">
                       {(showTags || (profileData && profileData.tags)).map(
                         (tag, index, array) => (
                           <>
@@ -139,7 +139,7 @@ const RelatedShows = ({ shows }: RelatedShowsProps) => {
                         ),
                       )}
                   </ul>
-                  <time>
+                  <time className="mt-2 sm:mt-0">
                     {showDateForList.length === 11
                       ? showDateForList.substring(3)
                       : showDateForList}

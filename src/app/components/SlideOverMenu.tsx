@@ -52,7 +52,7 @@ const SlideOver = () => {
           </div>
           <div className="absolute bottom-0 p-4 flex flex-row max-w-[100vw]  justify-between w-[26rem] ">
             <DigitalClock />
-            <span>Ⓒ 2024 </span>
+            <span>Ⓒ 2025 </span>
           </div>
         </div>
       </div>
