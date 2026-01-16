@@ -55,10 +55,16 @@ export interface ApiProfile {
 }
 
 export interface ApiBsidesList {
+  count: number;
+  next: string | null;
+  previous: string | null;
   results: Bside[];
 }
 
 export interface ApiProfilesList {
+  count: number;
+  next: string | null;
+  previous: string | null;
   results: ApiProfile[];
 }
 

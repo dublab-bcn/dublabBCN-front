@@ -2,7 +2,6 @@
 
 import { Metadata } from "next";
 import ResponsiveProfilesList from "../components/Bsides/ResponsiveProfileList";
-import Spinner from "../components/ui/Spinner";
 import getProfilesOrBsides from "../lib/getShowsOrBsides";
 import useDublabApi from "../lib/hooks/useDublabApi";
 import {ApiProfile} from "@/app/types";
@@ -15,22 +14,30 @@ export const metadata: Metadata = {
 
 export const revalidate = 1800;
 
-const ShowProfiles = async () => {
+const ShowProfiles = async ({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) => {
+  const searchQuery = searchParams?.search?.toString() || '';
+  const tagsQuery = searchParams?.tags?.toString() || '';
   const { getProfiles } = useDublabApi();
 
-  const onAirProfiles = await getProfilesOrBsides(getProfiles);
-
-  const isAllDataLoaded = onAirProfiles.every((apiProfiles) => apiProfiles);
+  const fetchProfiles = (page: string) => {
+    return getProfiles(page, searchQuery, tagsQuery);
+  };
   
-
-  const allProfilesList: ApiProfile[] = [];
-
-  onAirProfiles.forEach((profilesList) => {
-    allProfilesList.push(...profilesList.results);
+  const onAirProfiles = await getProfilesOrBsides(fetchProfiles, {
+    maxTotalPages: 10,
   });
-
   
-  if (!isAllDataLoaded) return <Spinner />;
+  const allProfilesList: ApiProfile[] = [];
+  
+  onAirProfiles.forEach((profilesList) => {
+    if (profilesList.results.length > 0) {
+      allProfilesList.push(...profilesList.results);
+    }
+  });
 
   return (
     <main className="flex flex-col mt-[219px]">

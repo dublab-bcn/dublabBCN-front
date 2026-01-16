@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ArchivedResponsiveProfilesList from "../components/Archive/ArchiveResponsiveComponent";
+import BsidesResponsiveProfilesList from "../components/Archive/BsidesResponsiveComponent";
 import useDublabApi from "../lib/hooks/useDublabApi";
 
 export const metadata: Metadata = {
@@ -10,11 +10,21 @@ export const metadata: Metadata = {
 
 export const revalidate = 7200;
 
-const BsidesList = async () => {
-  const { getBsides } = useDublabApi();
-  const bsidePage = "1";
+const BsidesList = async ({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) => {
+  const searchQuery = searchParams?.search?.toString() || '';
+  const tagsQuery = searchParams?.tags?.toString() || '';
 
-  const bSidesList = await getBsides(bsidePage);
+  const { getBsides } = useDublabApi();
+
+  const fetchProfiles = (page: string) => {
+    return getBsides(page, searchQuery, tagsQuery);
+  };
+
+  const bSidesList = await fetchProfiles("1");
 
   if (!bSidesList) return <div>Loading...</div>;
 
@@ -29,7 +39,7 @@ const BsidesList = async () => {
         <span>bbb</span>
         <h2>sides</h2>
       </div>
-      <ArchivedResponsiveProfilesList podcastsList={bSidesList} />
+      <BsidesResponsiveProfilesList podcastsList={bSidesList} />
     </main>
   );
 };

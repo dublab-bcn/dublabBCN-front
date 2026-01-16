@@ -11,23 +11,48 @@ import axios from "axios";
 const profileDataUrl = "https://api.dublab.cat/api/profiles/";
 const bsideDataUrl = "https://api.dublab.cat/api/b-sides/";
 const archivedProfileData = "https://api.dublab.cat/api/archived/";
-const profileListUrl = "https://api.dublab.cat/api/profiles/?page=";
-const bsidesListUrl = "https://api.dublab.cat/api/b-sides/?page=";
+const bsidesListUrl = "https://api.dublab.cat/api/b-sides/";
 const latestShowsData = "https://api.dublab.cat/api/shows/?page=";
 const showData = "https://api.dublab.cat/api/shows/";
-const archivedProfilesList = "https://api.dublab.cat/api/archived/?page=";
+const archivedProfilesList = "https://api.dublab.cat/api/archived/";
 
 const useDublabApi = () => {
-  const getProfiles = async (page: string | number) => {
+  const getProfiles = async (page?: string | number, search?: string, tags?: string) => {
+    const params = new URLSearchParams();
+    if (page && page !== '') {
+      params.append('page', page.toString());
+    }
+    
+    if (search && search.trim() !== '') {
+      params.append('search', search.trim());
+    }
+
+    if (tags && tags.trim() !== '') {
+      params.append('tags', tags.trim());
+    }
+    
     const { data: profiles } = await axios.get<ApiProfilesList>(
-      `${profileListUrl}${page}`,
+      `${profileDataUrl}?${params.toString()}`,
     );
     return profiles;
   };
 
-  const getArchivedProfiles = async (page: string | number) => {
+  const getArchivedProfiles = async (page?: string | number, search?: string, tags?: string) => {
+    const params = new URLSearchParams();
+    if (page && page !== '') {
+      params.append('page', page.toString());
+    }
+    
+    if (search && search.trim() !== '') {
+      params.append('search', search.trim());
+    }
+
+    if (tags && tags.trim() !== '') {
+      params.append('tags', tags.trim());
+    }
+    
     const { data: archivedProfiles } = await axios.get<ApiProfilesList>(
-      `${archivedProfilesList}${page}`,
+      `${archivedProfilesList}?${params.toString()}`,
     );
     return archivedProfiles;
   };
@@ -98,9 +123,22 @@ const useDublabApi = () => {
     return latestShows;
   };
 
-  const getBsides = async (page: string | number) => {
+  const getBsides = async (page?: string | number, search?: string, tags?: string) => {
+    const params = new URLSearchParams();
+    if (page && page !== '') {
+      params.append('page', page.toString());
+    }
+    
+    if (search && search.trim() !== '') {
+      params.append('search', search.trim());
+    }
+
+    if (tags && tags.trim() !== '') {
+      params.append('tags', tags.trim());
+    }
+    
     const { data: bSides } = await axios.get<ApiBsidesList>(
-      `${bsidesListUrl}${page}`,
+      `${bsidesListUrl}?${params.toString()}`,
     );
     return bSides;
   };
