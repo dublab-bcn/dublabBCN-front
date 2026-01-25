@@ -140,16 +140,6 @@ const ArchivedResponsiveProfilesList = ({
 
   return (
     <section>
-      <SearchBar
-        onSubmit={handleSearchSubmit}
-        value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder="Search for something..."
-        tags={tags}
-        selectedTags={selectedTags}
-        onTagChange={handleTagChange}
-        version = "archive"
-      />
       {!isOpen && (
         <>
           {mobileComponent ? (

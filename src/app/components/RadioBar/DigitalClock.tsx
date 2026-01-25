@@ -23,7 +23,7 @@ const DigitalClock = (): React.ReactElement => {
   const formattedTime = formatter.format(time);
 
   return (
-    <time className="min-w-[145px]" suppressHydrationWarning>
+    <time className="hidden md:block min-w-[120px] text-center align-middle" suppressHydrationWarning>
       Barcelona {formattedTime}
     </time>
   );

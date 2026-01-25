@@ -68,6 +68,14 @@ body {
   transform-origin: top center;
 }
 
+.rtl-grid {
+  direction: rtl;
+}
+
+.ltr-grid {
+  direction: ltr;
+}
+
 @keyframes moveLines {
   0% {
     transform: translateY(0);
