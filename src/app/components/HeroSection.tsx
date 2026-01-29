@@ -7,7 +7,7 @@ const HeroSection = (): React.ReactElement => {
   const { isOpen } = useSlideOver();
 
   return (
-    <section className="h-[200px] md:h-[300px] relative ">
+    <section className="h-[180px] md:h-[230px] 2xl:h-[260px] relative ">
       <div className="bottom-0 absolute w-full h-[42px] bg-black flex">
         {!isOpen && (
           <Marquee>

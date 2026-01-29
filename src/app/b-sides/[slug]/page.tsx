@@ -3,6 +3,7 @@ import extractUrlForEmbedPlayer from "@/app/lib/extractUrlForEmbedPlayer";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 interface BSideDetailsProps {
   params: {
@@ -43,21 +44,30 @@ const BsideDetails = async ({ params }: BSideDetailsProps) => {
   };
 
   return (
-    <main className="mt-[219px]  gap-[50px] flex sm:flex-row flex-col  bg-black text-white">
-      <Image
-        src={bside.picture}
-        alt={""}
-        width={660}
-        height={327}
-        className="md:h-[727px] object-cover"
-      />
-      <BsideInfo
-        showUrl={showUrl}
-        description={description}
-        name={bside.name}
-        tags={bside.tags}
-        tracklist={bside.tracklist}
-      />
+    <main className="mt-[127px] md:mt-[160px] 2xl:mt-[200px] p-8 bg-black text-white">
+      <Link
+        className="flex items-center w-full h-12 my-2 align-middle text-lg"
+        href="/b-sides"
+      >
+        ← Retorna a b-sides
+      </Link>
+      <div className="gap-[30px] md:gap-8 flex sm:flex-row flex-col items-start justify-start">
+        <Image
+          src={bside.picture}
+          alt={""}
+          width={660}
+          height={327}
+          className="w-full md:w-1/3 object-contain"
+        />
+        <BsideInfo
+          showUrl={showUrl}
+          description={description}
+          name={bside.name}
+          tags={bside.tags}
+          tracklist={bside.tracklist}
+        />
+      </div>
+
     </main>
   );
 };

@@ -44,5 +44,5 @@ export const navbarS1 = [
 export const navbarS2 = [
   { label: "Shows", route: "/shows" },
   { label: "BSides", route: "/b-sides" },
-  { label: "Merch", route: "https://dublabbcn.bigcartel.com/" },
+  { label: "Playlists", route: "" },
 ];

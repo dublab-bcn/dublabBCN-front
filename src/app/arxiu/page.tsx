@@ -8,7 +8,15 @@ export const metadata: Metadata = {
   description: "Programes programes que en el passat s'han emès a dublab bcn",
 };
 
-const ArchivedProfiles = async () => {
+const ArchivedProfiles = async ({
+    searchParams,
+  }: {
+    searchParams?: { [key: string]: string | string[] | undefined };
+  }) => {
+  
+  const searchQuery = searchParams?.search?.toString() || '';
+  const tagsQuery = searchParams?.tags?.toString() || '';
+  
   const { getArchivedProfiles } = useDublabApi();
   const archivePage = "1";
 
@@ -17,7 +25,7 @@ const ArchivedProfiles = async () => {
   if (!archivedProfiles) return <Spinner />;
 
   return (
-    <main className="flex flex-col bg-black text-white pt-[260px] md:pt-[400px]">
+    <main className="bg-black text-white flex flex-col md:pl-[50px] md:pr-[50px] pt-[260px] md:pt-[280px] 2xl:pt-[340px]">
       <section>
         <ArchivedResponsiveProfilesList podcastsList={archivedProfiles} />
       </section>

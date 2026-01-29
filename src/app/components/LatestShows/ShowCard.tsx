@@ -53,34 +53,38 @@ const ShowCard = ({
   const transformedHeight = parseInt(height, 10);
 
   return (
-    <article className={`h-[${height}px] relative leading-[120%] `}>
+    <article className="w-full h-full">
       <div
-        className="relative brightness-50 hover:brightness-90  "
+        className={`flex flex-col brightness-50 hover:brightness-90 group relative h-full rounded-xl overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Image
-          src={`${dublabApi}${profile_picture}`}
-          alt={`Imatge del programa ${showName}`}
-          height={transformedHeight}
-          width={353}
-          className={`overflow-hidden h-[${height}px] w-[353px] relative object-cover b`}
-          onClick={handleShowPlayback}
-          priority={true}
-        />
-        {isHovered && (
-          <Button
-            actionOnClick={handleShowPlayback}
-            className="absolute inset-0 flex items-center justify-center  "
-          >
-            <Image
-              src={"/assets/playwhite.svg"}
-              width={50}
-              height={50}
-              alt={""}
-            />
-          </Button>
-        )}
+        <div className={`relative h-48 sm:h-64 md:h-64 w-full overflow-hidden bg-gray-200`} >
+          <Image
+            src={`${dublabApi}${profile_picture}`}
+            alt={`Imatge del programa ${showName}`}
+            height={transformedHeight}
+            width={353}
+            className={`w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110`}
+            onClick={handleShowPlayback}
+            priority={true}
+          />
+          {isHovered && (
+            <Button
+              actionOnClick={handleShowPlayback}
+              className="absolute inset-0 flex items-center justify-center "
+            >
+              <Image
+                src={"/assets/playwhite.svg"}
+                width={50}
+                height={50}
+                alt={""}
+              />
+            </Button>
+          )}
+        </div>
+
+
       </div>
       <ul className="flex flex-col absolute p-4 bottom-1 gap-[3px] text-white ">
         <li className="mb-3 h-[14px]">

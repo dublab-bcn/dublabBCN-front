@@ -59,7 +59,7 @@ export function SearchProvider({ children }: { children: ReactNode }) {
     } else if (pathname === '/arxiu') {
       config = {
         type: 'archive',
-        placeholder: '',
+        placeholder: 'Buscar en arxiu...',
         apiFunction: async (page: number, search?: string, tags?: string) => {
           return getArchivedProfiles(page, search, tags);
         },

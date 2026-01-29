@@ -2,15 +2,13 @@
 import { useSlideOver } from "@/app/contexts/useContexts";
 import useMobileComponent from "@/app/lib/hooks/useMobileComponent";
 import { ApiBsidesList } from "@/app/types";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import ProfilesListMobile from "../Profiles/ProfilesListMobile";
 import Spinner from "../ui/Spinner";
 import { useInView } from "react-intersection-observer";
 import { useSpinner } from "@/app/contexts/useContexts";
 import ProfilesListArchive from "./ProfilesListArchive";
 import { useState, useEffect } from "react";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
-import { useSearch } from "@/app/contexts/SearchContext"; // Import SearchContext
+import { useSearch } from "@/app/contexts/SearchContext";
 
 interface ResponsiveMobileProfileList {
   podcastsList: ApiBsidesList;
@@ -18,7 +16,6 @@ interface ResponsiveMobileProfileList {
 
 const BsidesResponsiveProfilesList = ({
 }: ResponsiveMobileProfileList) => {
-  const mobileComponent = useMobileComponent();
   const { isOpen } = useSlideOver();
   const { isLoading, setIsLoading } = useSpinner();
   const { getBsides } = useDublabApi();
@@ -98,11 +95,7 @@ const BsidesResponsiveProfilesList = ({
     <section>
       {!isOpen && (
         <>
-          {mobileComponent ? (
-            <ProfilesListMobile seasonProfiles={podcastsList!.results} />
-          ) : (
-            <ProfilesListArchive profilesOrBsides={podcastsList!.results} />
-          )}
+          <ProfilesListArchive profilesOrBsides={podcastsList!.results} />
           <div ref={ref}> {isLoading && <Spinner />}</div>
         </>
       )}

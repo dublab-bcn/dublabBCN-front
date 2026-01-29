@@ -1,10 +1,11 @@
 import ProfileLinks from "@/app/components/Profiles/ProfileLinks";
+import Description from "@/app/components/Profiles/ProfileDescription";
 import RelatedShows from "@/app/components/Profiles/ProfileRelatedShows";
 import Spinner from "@/app/components/ui/Spinner";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
 import { Metadata } from "next";
+import Link from "next/link";
 import Image from "next/image";
-
 interface ProfileDetailsProps {
   params: {
     slug: string;
@@ -50,59 +51,61 @@ const ProfileDetails = async ({ params }: ProfileDetailsProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <main className="mt-[155px] md:mt-[255px] gap-[50px] flex sm:flex-row flex-col justify-between p-4 md:p-0 ">
-      <Image
-        src={profileData.picture}
-        alt={""}
-        width={660}
-        height={327}
-        className="sm:h-[727px] h-[358px] max-w-[660px] w-auto object-cover sm:p-0 p-4 "
-      />
-      <section className="lg:max-h-[700px] sm:w-[100vw] md:overflow-y-scroll scrollbar-hide sm:pr-[2rem]">
-        <div className="flex justify-between items-end">
-          <ul className="flex gap-[10px] pr-4 opacity-100 sm:opacity-40">
-            {profileData.tags.map((tag) => (
-              <li
-                key={tag}
-                className={`text-[11px] border rounded-md pt-[5px]  px-2 pb-[3px]`}
-              >
-                {tag}
+    <main className="mt-[127px] sm:mt-[160px] 2xl:mt-[200px] p-8">
+      <Link
+        className="flex items-center w-full h-12 my-2 align-middle text-lg"
+        href="/shows"
+      >
+        ← Retorna a shows
+      </Link>
+      <div className="gap-[30px] sm:gap-8 flex sm:flex-row flex-col items-start justify-start">
+        <Image
+          src={profileData.picture}
+          alt={""}
+          width={660}
+          height={327}
+          className="w-full sm:w-1/3 w-auto object-contain"
+        />
+        <section className="sm:overflow-y-scroll scrollbar-hide sm:h-[67vh] w-full">
+          <div className="flex justify-between items-end">
+            <ul className="flex gap-[10px] opacity-100 sm:opacity-40">
+              {profileData.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className={`text-[11px] border rounded-md pt-[5px]  px-2 pb-[3px]`}
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="w-fit">
+            <h2 className="text-5xl sm:h-[25px] mt-[25px]">{profileShowName}</h2>
+            <ul className="flex gap-9 sm:gap-[194px] text-[32px] mt-[20px] sm:mt-[50px]">
+              <li>With</li>
+              <li className="max-w-[304px] sm:max-w-[400px]">
+                {profileData.host}
               </li>
-            ))}
-          </ul>
-        </div>
-        <div className="w-fit">
-          <h2 className="text-5xl sm:h-[58px] mt-[56px]">{profileShowName}</h2>
-          <ul className="flex gap-9 sm:gap-[194px] text-[32px]  mt-[20px] sm:mt-[50px]">
-            <li>With</li>
-            <li className="max-w-[304px] sm:max-w-[400px]">
-              {profileData.host}
-            </li>
-          </ul>
-        </div>
-        <section className="flex flex-col-reverse gap-[35px] sm:gap-[140px] ">
+            </ul>
+          </div>
           <div
-            className={`w-fit sm:max-w-none mt-8 ${
+            className={`w-fit md:flex sm:max-w-none mt-8 ${
               profileData.links ? "md:gap-[5.1rem]" : "sm:gap-[5.8rem]"
-            }  flex flex-row `}
+            }`}
           >
             <ProfileLinks links={profileData.links} />
-            <div className="flex items-start">
-              <p className="text-sm sm:w-fit  sm:pr-0">
-                {profileData.description}
-              </p>
-            </div>
+            <Description description={profileData.description} />
           </div>
-        </section>
-        <section className="flex-col items-end">
           <div className="text-2xl flex items-end justify-between mt-[58px] gap-16 mb-[17px]">
-            <h3 className="h-fit">Shows Relacionats</h3>
-            <span className="pr-2">{currentYear}</span>
+            <h3 className="h-fit">Shows</h3>
           </div>
-          <hr className="border-black w-[99%] " />
-          <RelatedShows shows={profileData.shows} />
+          
+          <section className="flex-col items-end">
+            <hr className="border-black w-[99%] " />
+            <RelatedShows shows={profileData.shows} />
+          </section>
         </section>
-      </section>
+      </div> 
     </main>
   );
 };

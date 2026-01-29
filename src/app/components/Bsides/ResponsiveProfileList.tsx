@@ -25,18 +25,9 @@ const ResponsiveProfilesList = ({
   return (
     <section>
       {!isOpen && (
-        <>
-          {mobileComponent ? (
-            <ProfilesListMobile 
-              seasonProfiles={podcastsList}
-            />
-          ) : (
-            <ProfilesList 
-              profilesOrBsides={podcastsList}
-            />
-          )}
-          {!isShows && <LoadMoreBsides isMobile={mobileComponent} />}
-        </>
+        <ProfilesList 
+          profilesOrBsides={podcastsList}
+        />
       )}
     </section>
   );

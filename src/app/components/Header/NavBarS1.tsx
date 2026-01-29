@@ -8,8 +8,8 @@ const NavBarS1 = (): React.ReactElement => {
   return (
     <>
       {!isOpen && (
-        <div className="w-full hidden md:block">
-          <nav className="px-12 h-[42px] sm:flex justify-center rounded-md font-Favorit text-sm font-normal uppercase">
+        <div className="hidden md:block">
+          <nav className="h-[42px] sm:flex justify-end rounded-md font-Favorit text-sm font-normal uppercase">
             <ul className="flex items-center flex-row justify-between gap-10 lg:gap-[80px]">
               {navbarS1.map(({ label, route }) => (
                 <li key={route} className="pt-[2px] hover:opacity-50 whitespace-nowrap">

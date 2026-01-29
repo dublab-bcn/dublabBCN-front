@@ -9,12 +9,39 @@ import NavBarS1 from "./NavBarS1";
 import NavBarS2 from "./NavBarS2";
 import RadioController from "./RadioController";
 import { usePathname } from "next/navigation";
-import { use, useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import checkPathName from "@/app/lib/checkPathName";
 
 import SearchBar from "@/app/components/SearchBar/SearchBar";
 
 const Header = (): React.ReactElement => {
+
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') { 
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
+
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
+
   const { isOpen, setIsOpen } = useSlideOver();
   const variableWidth = isOpen ? "2/4" : "full";
   const handleLinkClick = () => {
@@ -58,26 +85,26 @@ const Header = (): React.ReactElement => {
 
   const showSearch = searchConfig && searchConfig.type !== 'none';
 
-
   return (
-    <header className={`w-fit fixed top-0 left-0 w-${variableWidth} h-[100px] z-50 gap-8 2xl:gap-[300px] bg-white`}>
-      <div className="grid grid-cols-3 gap-2 justify-start p-4 sm:p-8 items-center justify-center bg-white">
-        <Link onClick={handleLinkClick} href="/" className="w-[200px] col-span-2 md:col-span-1 md:w-[300px] relative">
+    <header className={`grid grid-cols-1 gap-0 w-fit fixed top-0  left-0 w-${variableWidth} z-50  ${pageIsBlack? 'bg:black': 'bg-white'}`}>
+      <div className={`flex justify-between p-4 sm:p-8 md:h-[80px] 2xl:h-[100px] items-center bg-white 
+                      transition-transform duration-300 ${isVisible ? '' : 'hidden'}`}>
+        <Link onClick={handleLinkClick} href="/" className="w-[200px] col-span-2 relative">
           <Image
             src={displayedLogo}
             alt="dublab Barcelona logo"
             width={627.259}
             height={138.42}
-            className="relative left-2 z-50 object-contain"
+            className="relative z-50 object-contain"
           />
         </Link>
         <DigitalClock />
         <NavBarS1 />
         <SlideOverMenu />
       </div>
-      <div className="mt-0 grid grid-cols-1 md:grid-cols-2 gap-0 justify-start rtl-grid"> {/* Changed mt-[5px] to mt-0 */}
-        <RadioController />
+      <div className="mt-0 md:grid md:grid-cols-2 md:h-[80px] 2xl:h-[100px] gap-0 justify-start">
         <NavBarS2 />
+        <RadioController />
       </div>
       {showSearch && (
         <SearchBar

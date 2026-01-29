@@ -1,6 +1,5 @@
 "use client";
 
-import RadioBar from "@/app/components/RadioBar/RadioBar";
 import AudioProvider from "../AudioContext";
 import { RadioDataProvider } from "../RadioDataContext";
 import { SpinnerProvider } from "../SpinnerContext";

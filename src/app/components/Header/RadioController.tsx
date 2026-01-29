@@ -29,7 +29,6 @@ const RadioController = () => {
       : null;
 
     const { audio, setAudio } = useAudio();
-    const { randomProgram } = useMixCloud();
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
   
@@ -45,86 +44,56 @@ const RadioController = () => {
       }
       setIsPlaying(!isPlaying);
     };
-  
-    const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const volume = +e.target.value;
-      if (audio) {
-        audio.volume = volume;
-      }
-    };
 
   return (
-    <div className="h-[104px] sticky top-0 flex justify-between items-center pl-4 pr-4 lg:pr-32 md:pl-[50px] flex-row bg-black text-white font-Favorit text-sm font-light uppercase ltr-grid">
-      <div className="min-w-fit flex gap-[200px] group">
+    <div className="flex gap-3 justify-between items-center pl-4 pr-4 md:pr-8 2xl:pl-[50px] flex-row bg-black text-white font-Favorit text-sm font-light uppercase">
+      <div className={`flex flex-none gap-3 items-center ${!currentShowName && "w-full justify-center md:w-64 md:justify-end"}`}>
         <audio src={streamingSource} ref={audioRef}></audio>
-        <div className="grid grid-cols-5 gap-[5px] items-center">
-          <Image
-            className="animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out animate-normal"
-            src={`/assets/${currentShowName ? "Ellipse_red.svg" : "Ellipse.svg"}`}
-            alt={"Elipse"}
-            width={"20"}
-            height={"20"}
-          />
-          {currentShowName ? (
-            <span className="block text-center col-span-2">
-              LIVE
-            </span>
-          ) : (
-            <span className="block text-center col-span-2">
-              OFFLINE
-            </span>
-          )}
-          <Button
-              actionOnClick={togglePlay}
-                  className="uppercase min-w-[42px] text-sm col-span-2"
-                >
-                  <Image
-                  className="relative left-2 object-contain"
-                  src={`/assets/${isPlaying ? "pause_radio.svg" : "play_radio.svg"}`}
-                  alt={"Elipse"}
-                  width={"50"}
-                  height={"50"}
-                />
-          </Button>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            onChange={changeVolume}
-            className="col-span-5 appearance-none bg-white h-[7px] overflow-hidden"
-          />
-        </div>
-      </div>
-      <li className="flex gap-[9px]">
-        
-      <span className="min-w-fit"></span>
+        <Image
+          className="animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out animate-normal relative"
+          src={`/assets/${currentShowName ? "Ellipse_red.svg" : "Ellipse.svg"}`}
+          alt={"Elipse"}
+          width={"20"}
+          height={"20"}
+        />
         {currentShowName ? (
-          <div className="max-w-[200px]">
-            En directe: {decodedCurrentShow}
-          </div>
+          <span className="block text-center">
+            LIVE
+          </span>
         ) : (
-          <div className="max-w-[200px]">
-            Offline
-          </div>
+          <span className="block text-center">
+            OFFLINE
+          </span>
         )}
-      </li>
-      <li className="text-white/60 hidden sm:flex ">
-        PRÒXIM:
-        {nextShowStarts ? (
-          <div>
-            <span className="ml-[19px]">{nextShowStarts.slice(11, 16)}</span>
-            <span className="ml-[19px]">
-              {he.decode(nextShowName as string)}
-            </span>
+        <Button
+            actionOnClick={togglePlay}
+                className="uppercase text-sm"
+              >
+                <Image
+                className="relative object-contain"
+                src={`/assets/${isPlaying ? "pause_radio.svg" : "play_radio.svg"}`}
+                alt={"Elipse"}
+                width={"50"}
+                height={"50"}
+              />
+        </Button>
+      </div>
+      {currentShowName && (
+        <span className="">
+          En directe: {decodedCurrentShow}
+        </span>
+        )
+      }
+
+      {nextShowStarts ? (
+          <span className="text-white/60 hidden sm:flex ">PRÒXIM: {nextShowStarts.slice(11, 16)} {he.decode(nextShowName as string)}
             {nextShowHost && (
               <span>{he.decode(nextShowHost as string)}</span>
             )}
-          </div>
-        ) : (
-          <span>Informació no disponible...</span>
-        )}
-      </li>
+          </span>
+      ) : (
+        <span>Informació no disponible...</span>
+      )}
     </div>
   );
 };

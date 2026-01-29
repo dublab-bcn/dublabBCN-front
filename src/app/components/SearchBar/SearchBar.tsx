@@ -57,7 +57,7 @@ const SearchBar: FC<SearchBarProps> = ({
   const [isTagsVisible, setIsTagsVisible] = useState(false);
 
   return (
-    <div className={`px-4 pb-4 grid grid-1 md:flex md:gap-4 ${version === 'shows' ? 'bg-white' : 'bg-black'}`}>
+    <div className={`md:h-[120px] 2xl:h-[140px] px-4 pb-4 grid grid-1 md:flex md:gap-4 ${version === 'shows' ? 'bg-white' : 'bg-black'}`}>
       <h2 className={`hidden md:block w-64 flex-none text-2xl font-semibold mb-2 mt-4 align-middle md:pl-[50px] ${version === 'shows' ? 'text-black' : 'text-white'}`}
         dangerouslySetInnerHTML={{ __html: titleTextDesktop }}
       ></h2>
@@ -75,21 +75,21 @@ const SearchBar: FC<SearchBarProps> = ({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={`h-8 w-3/4 md:w-full rounded-md border border-[#EBEEF7] text-sm ${
-              version === 'shows' ? 'bg-white' : 'bg-black'
+            className={`h-8 pl-3 w-3/4 md:w-full rounded-md border border-[#EBEEF7] text-sm ${
+              version === 'shows' ? 'bg-white' : 'bg-black text-white'
             }`}
           />
 
           {tags.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setIsTagsVisible(!isTagsVisible)}
-              className="w-1/4 md:hidden flex items-center justify-center h-8 rounded-md border border-[#EBEEF7] text-sm"
-            >
-              <span className="ml-2">
-                {isTagsVisible ? '↑' : '↓'}
-              </span>
-            </button>
+          <button
+            type="button"
+            onClick={() => setIsTagsVisible(!isTagsVisible)}
+            className={`w-1/4 md:hidden flex items-center justify-center h-8 rounded-md border border-[#EBEEF7] text-lg ${
+              version === 'shows' ? 'bg-white' : 'text-white'
+            }`}
+          >
+            {isTagsVisible ? '⬆' : '⬇'}
+          </button>
           )}
         </div>
 
@@ -97,17 +97,21 @@ const SearchBar: FC<SearchBarProps> = ({
           <div className={`md:col-span-5 mt-4${isTagsVisible ? '' : ' hidden md:block'}`}>
               <div
                 ref={tagsContainerRef}
-                className="flex flex-wrap gap-2 overflow-hidden"
-                style={{
-                  height: '7rem'
-                }}
+                className="flex flex-wrap gap-2 overflow-y-auto h-[6rem] 2xl:h-[7rem]
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:transparent
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
               >
                 <input
                   type="text"
                   value={tagFilter}
                   onChange={(e) => setTagFilter(e.target.value)}
                   placeholder="Filter tags..."
-                  className={`h-8 px-3 py-1 rounded-full text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap
+                  className={`px-3 py-1 rounded-full h-[1.5rem] 2xl:h-[2rem] text-xs 2xl:text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap
                     ${(version === 'shows' ? 'bg-gray-100 text-gray-700 border hover:bg-gray-200' : 'bg-black text-white shadow-sm border border-white')}`
                   }
                 />
@@ -117,7 +121,7 @@ const SearchBar: FC<SearchBarProps> = ({
                       key={tag}
                       type="button"
                       onClick={() => handleTagClick(tag)}
-                      className={`h-8 px-3 py-1 rounded-full text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap ${
+                      className={`px-3 py-1 rounded-full  h-[1.5rem] 2xl:h-[2rem] text-xs 2xl:text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap ${
                         selectedTags.includes(tag)
                           ? (version === 'shows' ? 'bg-black text-white shadow-sm' : 'bg-white text-black shadow-sm border ')
                           : (version === 'shows' ? 'bg-gray-100 text-gray-700 border hover:bg-gray-200' : 'bg-black text-white shadow-sm border border-white') 
