@@ -10,7 +10,7 @@ const Tags = ({ tags, isShows }: TagProps) => {
     <>
       {tags && (
         <ul
-          className={`flex flex-wrap gap-2 mt-2`}
+          className={`flex flex-wrap gap-2`}
         >
           {tags.map((tag) => (
             <>

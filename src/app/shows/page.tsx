@@ -40,7 +40,7 @@ const ShowProfiles = async ({
   });
 
   return (
-    <main className="flex flex-col md:pl-[50px] md:pr-[50px] pt-[260px] md:pt-[280px] 2xl:pt-[340px]">
+    <main className="flex flex-col md:pl-[50px] md:pr-[50px] pt-[260px] md:pt-[280px] 2xl:pt-[340px] pb-16">
       <ResponsiveProfilesList key={0} podcastsList={allProfilesList} />
     </main>
   );

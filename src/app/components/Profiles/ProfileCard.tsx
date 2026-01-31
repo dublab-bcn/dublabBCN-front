@@ -47,7 +47,7 @@ const ProfileCard = ({
     <Link href={`/${dynamicPath}/${slug}`}>
       <article className="w-full h-full">
         <div className={"block group relative h-full rounded-xl overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl " + (changeBackgroundPath ? 'shadow-cyan-500/50' : '')}>
-          <div className="relative h-48 sm:h-64 md:h-64 w-full overflow-hidden bg-gray-200">
+          <div className="relative  w-full aspect-square overflow-hidden bg-gray-200">
             <img
               src={defaultImage}
               alt={`Imatge del programa ${slug}`}
