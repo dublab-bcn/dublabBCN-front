@@ -2,7 +2,6 @@
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
 import { formatAndSortRelatedShowsInfo } from "@/app/lib/processSlug";
 import { ApiProfile, RadioApiShow } from "@/app/types";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useSWR from "swr";
 import { useMixCloud } from "@/app/contexts/MixCloudContext";
@@ -17,7 +16,6 @@ const RelatedShows = ({ shows }: RelatedShowsProps) => {
   const { getArchivedProfileData, getProfileData } = useDublabApi();
   const pathname = usePathname();
 
-  const dynamicPath: string = pathname.includes("/shows") ? "shows" : "arxiu";
   const lineColor: string = pathname.includes("/shows") ? "black" : "white";
   const getterFunctionToPass = pathname.includes("/shows")
     ? getProfileData
@@ -68,7 +66,6 @@ const RelatedShows = ({ shows }: RelatedShowsProps) => {
           showDateForList,
           showDateForUrl,
           showTags,
-          slugToUrl,
           showTitle,
           showHost,
           showMixcloudUrl,

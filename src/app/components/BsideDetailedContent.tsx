@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
-import Button from "./Button";
 import Tracklist from "./Tracklist";
 import { useMixCloud } from "@/app/contexts/MixCloudContext";
 import Description from "@/app/components/Profiles/ProfileDescription";
-import Link from "next/link";
 import Image from "next/image";
 import { Menu } from '@headlessui/react';
 

@@ -21,12 +21,14 @@ const LatestShowsFixedHeight = ({
       {latestShows.map((show) => (
         Object.prototype.hasOwnProperty.call(show, "host") ? (
           <ShowCard
+            key={show.slug}
             show={show}
             height={"385"}
             onClickPlayback={handleCardShow}
           />
         ) : (
           <BsideCard
+            key={show.slug} // Add key prop
             bside={show as Bside}
             height={"385"}
             onClickPlayback={handleCardShow}

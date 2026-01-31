@@ -48,8 +48,6 @@ const ProfileDetails = async ({ params }: ProfileDetailsProps) => {
 
   if (!profileData) return <Spinner />;
 
-  const currentYear = new Date().getFullYear();
-
   return (
     <main className="mt-[127px] sm:mt-[160px] 2xl:mt-[200px] p-8">
       <Link

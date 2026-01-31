@@ -48,7 +48,6 @@ const Header = (): React.ReactElement => {
     setIsOpen(false);
   };
 
-  const [backgroundColor, setBackgroundColor] = useState("white");
   const [displayedLogo, setDisplayedLogo] = useState(
     "/assets/Logo_dublabBCN2024.png"
   );
@@ -75,7 +74,6 @@ const Header = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    setBackgroundColor(pageIsBlack ? "black" : "white");
     setDisplayedLogo(
       pageIsBlack
         ? "/assets/logo-dublabBCN2024-negative.png"

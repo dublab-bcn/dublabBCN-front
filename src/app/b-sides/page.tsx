@@ -30,7 +30,7 @@ const BsidesList = async ({
 
   return (
     <main className="bg-black text-white flex flex-col md:pl-[50px] md:pr-[50px] pt-[260px] md:pt-[280px] 2xl:pt-[340px] pb-16">
-      <BsidesResponsiveProfilesList podcastsList={bSidesList} />
+      <BsidesResponsiveProfilesList/>
     </main>
   );
 };

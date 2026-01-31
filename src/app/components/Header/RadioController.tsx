@@ -1,28 +1,22 @@
 import useAirtimeApi from "@/app/lib/hooks/useAirtimeApi";
 import useSWR from "swr";
 import Image from "next/image";
-import { LiveRadioData } from "@/app/types";
 import he from "he";
 import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import { useAudio } from "@/app/contexts/useContexts";
-import { useMixCloud } from "@/app/contexts/MixCloudContext";
 
 export const streamingSource = "https://dublabbcn.out.airtime.pro/dublabbcn_a";
-
-interface CurrentAndNextShowProps {
-  liveData: LiveRadioData;
-}
 
 const RadioController = () => {
   const { getLiveRadioData } = useAirtimeApi();
 
   const { data: LiveRadioData } = useSWR("liveRadioData", getLiveRadioData);
 
-  const currentShowName = LiveRadioData!?.currentShow[0]?.name || null;
-  const nextShowStarts = LiveRadioData!?.nextShow[0]?.starts || null;
-  const nextShowName = LiveRadioData!?.nextShow[0]?.name || null;
-  const nextShowHost = LiveRadioData!?.nextShow[0]?.url || null;
+  const currentShowName = LiveRadioData?.currentShow[0]?.name || null;
+  const nextShowStarts = LiveRadioData?.nextShow[0]?.starts || null;
+  const nextShowName = LiveRadioData?.nextShow[0]?.name || null;
+  const nextShowHost = LiveRadioData?.nextShow[0]?.url || null;
 
   const decodedCurrentShow = currentShowName
       ? he.decode(currentShowName)
@@ -48,7 +42,14 @@ const RadioController = () => {
   return (
     <div className="flex gap-3 justify-between items-center pl-4 pr-4 md:pr-8 2xl:pl-[50px] flex-row bg-black text-white font-Favorit text-sm font-light uppercase">
       <div className={`flex flex-none gap-3 items-center ${!currentShowName && "w-full justify-center md:w-64 md:justify-end"}`}>
-        <audio src={streamingSource} ref={audioRef}></audio>
+        <audio src={streamingSource} ref={audioRef}>
+        <track
+          kind="captions"
+          src="" 
+          srcLang="ca"
+          label="Català"
+        />
+      </audio>
         <Image
           className="animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out animate-normal relative"
           src={`/assets/${currentShowName ? "Ellipse_red.svg" : "Ellipse.svg"}`}

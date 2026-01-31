@@ -132,7 +132,7 @@ const SearchBar: FC<SearchBarProps> = ({
                   ))
                 ) : (
                   <div className="text-gray-500 text-sm py-2 px-4">
-                    Cap tag "{tagFilter}"
+                    Cap tag &quot;{tagFilter}&quot;
                   </div>
                 )}
               </div>

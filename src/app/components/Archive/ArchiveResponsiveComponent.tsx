@@ -9,11 +9,8 @@ import { useState, useEffect } from "react";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
 import { useSearch } from "@/app/contexts/SearchContext";
 import Spinner from "../ui/Spinner";
-interface ResponsiveMobileProfileList {
-  podcastsList?: ApiProfilesList; // Made optional since we fetch it internally mostly
-}
 
-const ArchivedResponsiveProfilesList = ({}: ResponsiveMobileProfileList) => {
+const ArchivedResponsiveProfilesList = () => {
   const mobileComponent = useMobileComponent();
   const { isOpen } = useSlideOver();
   const { isLoading, setIsLoading } = useSpinner();
@@ -87,7 +84,6 @@ const ArchivedResponsiveProfilesList = ({}: ResponsiveMobileProfileList) => {
         setHasMore(false);
       }
     } catch (error) {
-      console.error("Failed to load more:", error);
       setHasMore(false);
     } finally {
       await setIsLoading(false);

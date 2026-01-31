@@ -43,13 +43,12 @@ const QueueDisplay = () => {
       widget.ready
         .then(() => {
           if (widget.events && widget.events.ended) {
-            widget.events.ended.off(); 
             widget.events.ended.on(() => {
               playNext();
             });
           }
         })
-        .catch((err: any) => console.error("Widget error", err));
+        .catch();
     };
 
     if (!window.Mixcloud) {

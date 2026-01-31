@@ -2,7 +2,6 @@ import localfont from "next/font/local";
 import AppProvider from "./contexts/providers/Index";
 import "./globals.css";
 import { Metadata , Viewport } from "next";
-import Link from "next/link";
 
 const favorit = localfont({
   src: "./fonts/Favorit_Regular_Mono.ttf",

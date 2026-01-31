@@ -8,7 +8,7 @@ import useDublabApi from '@/app/lib/hooks/useDublabApi';
 interface SearchConfig {
   type: 'shows' | 'bsides' | 'archive' | 'none';
   placeholder: string;
-  apiFunction: (page: number, search?: string, tags?: string) => Promise<any>;
+  apiFunction: (page: number, search?: string, tags?: string) => Promise<unknown>;
 }
 
 interface SearchContextType {
@@ -37,7 +37,6 @@ export function SearchProvider({ children }: { children: ReactNode }) {
   const { getProfiles, getBsides, getArchivedProfiles } = useDublabApi();
 
   useEffect(() => {
-    const tagsClass = getTags();
     let config: SearchConfig;
     
     if (pathname === '/shows') {
