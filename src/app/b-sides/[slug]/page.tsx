@@ -44,7 +44,7 @@ const BsideDetails = async ({ params }: BSideDetailsProps) => {
   };
 
   return (
-    <main className="mt-[127px] md:mt-[160px] 2xl:mt-[200px] p-8 bg-black text-white">
+    <main className="pt-[127px] md:pt-[160px] 2xl:pt-[200px] p-8 bg-black text-white">
       <Link
         className="flex items-center w-full h-12 my-2 align-middle text-lg"
         href="/b-sides"

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Tracklist from "./Tracklist";
 import { useMixCloud } from "@/app/contexts/MixCloudContext";
 import Description from "@/app/components/Profiles/ProfileDescription";
 import Image from "next/image";
@@ -37,8 +36,8 @@ const BsideInfo = ({
 
   return (
     <>
-      <section className="md:overflow-y-scroll scrollbar-hide overflow-y-scroll scrollbar-hide bg-black
-                          [&::-webkit-scrollbar]:hidden">
+      <section className="md:overflow-y-scroll scrollbar-hide scrollbar-hide bg-black
+                          [&::-webkit-scrollbar]:hidden md:min-h-[600px] w-full">
         <div className="flex justify-between items-end mb-8">
           <ul className="flex gap-[10px] opacity-100 sm:opacity-40">
             {tags.map((tag) => (
@@ -61,37 +60,17 @@ const BsideInfo = ({
         </section>
 
         <div
-            className={`w-fit md:flex sm:max-w-none mt-8 sm:gap-[5.8rem]"
-            }`}
+            className={`w-fit md:flex sm:max-w-none mt-8 sm:gap-[5.8rem]`}
         >
             <Description description={description} />
         </div>
 
-        <hr className={`border-white  w-full mt-8`} />    
-
-        <section className="flex-col items-end">
-          {tracklist && <Tracklist tracklist={tracklist} />}
-        </section>
+        <hr className={`border-white  w-full mt-8`} />
 
         <div className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-[17px] mb-4">
           <section className="col-span-3 md:col-span-1 align-center text-center md:text-right grid grid-cols-3">
-            <button 
-              className="flex flex-col items-center justify-center w-full ltr-grid gap-2" 
-              onClick={() => listenToBside(showUrl)}
-            >
-              <span>►</span>
-              <span className="text-xs">
-                PLAY
-              </span>
-            </button>
-            <button className="flex flex-col items-center justify-center w-full ltr-grid gap-2" onClick={() => addToQueueInShow(showUrl, name)}>
-              <span>+</span>
-              <span className="text-xs">
-                QUEUE
-              </span>
-            </button>
             { tracklist!= undefined && tracklist.length > 0 ? (
-              <Menu as="div" className="relative flex flex-col justify-center ltr-grid ">
+              <Menu as="div" className="relative flex flex-col justify-center ltr-grid">
                 <Menu.Button className = "flex flex-col items-center w-full gap-2">
                   <Image src={"/assets/list_white.svg"}
                   width={25.0}
@@ -103,7 +82,7 @@ const BsideInfo = ({
                   TRACKLIST
                 </span>
                 </Menu.Button>
-                <Menu.Items className="absolute w-[85vw] md:w-[345px] left-[0px] top-[30px] md:left-[-250px] lg:left-[-220px] xl:left-[-200px] 2xl:left-[-70px] mb-2 z-10 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none">
+                <Menu.Items className="absolute w-[85vw] md:w-[345px] left-[0px] bottom-[-20px] md:left-[0px] lg:left-[-220px] xl:left-[-200px] 2xl:left-[-70px] mb-2 z-10 border border-white divide-y divide-gray-100 rounded-md bg-black outline-none">
                   <div className="p-4">
                     <h3 className="text-lg font-medium mb-2">
                       Tracklist
@@ -117,6 +96,21 @@ const BsideInfo = ({
                 </Menu.Items>
               </Menu>) : <div></div> 
             }
+            <button className="flex flex-col items-center justify-center w-full ltr-grid gap-2" onClick={() => addToQueueInShow(showUrl, name)}>
+              <span>+</span>
+              <span className="text-xs">
+                QUEUE
+              </span>
+            </button>
+            <button 
+              className="flex flex-col items-center justify-center w-full ltr-grid gap-2" 
+              onClick={() => listenToBside(showUrl)}
+            >
+              <span>►</span>
+              <span className="text-xs">
+                PLAY
+              </span>
+            </button>
           </section>
         </div>
         <hr className={`border-white  w-full `} />    

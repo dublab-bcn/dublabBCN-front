@@ -1,5 +1,6 @@
 'use client'
 import { ChangeEvent, FC, FormEvent, useState, useRef } from 'react'
+import Image from "next/image";
 
 interface SearchBarProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
@@ -88,7 +89,13 @@ const SearchBar: FC<SearchBarProps> = ({
               version === 'shows' ? 'bg-white' : 'text-white'
             }`}
           >
-            {isTagsVisible ? '⬆' : '⬇'}
+            <Image
+              src={version === 'shows' ? "/assets/arrow.svg" : "/assets/arrow_white.svg"}
+              width={20}
+              height={20}
+              alt={""}
+              className={`object-contain ${isTagsVisible ? 'transform rotate-180' : 'transform rotate-0'}`}
+            />
           </button>
           )}
         </div>

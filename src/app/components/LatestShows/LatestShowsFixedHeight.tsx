@@ -17,7 +17,7 @@ const LatestShowsFixedHeight = ({
   };
 
   return (
-    <section className="pt-8 pb-16 flex flex-col items-center sm:px-8 md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+    <section className="p-4 pb-16 flex flex-col items-center sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-4 relative">
       {latestShows.map((show) => (
         Object.prototype.hasOwnProperty.call(show, "host") ? (
           <ShowCard

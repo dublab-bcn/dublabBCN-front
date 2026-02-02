@@ -16,32 +16,6 @@ import SearchBar from "@/app/components/SearchBar/SearchBar";
 
 const Header = (): React.ReactElement => {
 
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  const controlNavbar = () => {
-    if (typeof window !== 'undefined') { 
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', controlNavbar);
-
-      return () => {
-        window.removeEventListener('scroll', controlNavbar);
-      };
-    }
-  }, [lastScrollY]);
-
   const { isOpen, setIsOpen } = useSlideOver();
   const variableWidth = isOpen ? "2/4" : "full";
   const handleLinkClick = () => {
@@ -85,9 +59,8 @@ const Header = (): React.ReactElement => {
 
   return (
     <header className={`grid grid-cols-1 gap-0 w-fit fixed top-0  left-0 w-${variableWidth} z-50  ${pageIsBlack? 'bg:black': 'bg-white'}`}>
-      <div className={`flex justify-between p-4 sm:p-8 md:h-[80px] 2xl:h-[100px] items-center bg-white 
-                      transition-transform duration-300 ${isVisible ? '' : 'hidden'}`}>
-        <Link onClick={handleLinkClick} href="/" className="w-[200px] col-span-2 relative">
+      <div className={`flex justify-between p-4 sm:p-8 md:h-[80px] 2xl:h-[100px] items-center bg-white`}>
+        <Link onClick={handleLinkClick} href="/" className="w-[150px] md:w-[200px] col-span-2 relative">
           <Image
             src={displayedLogo}
             alt="dublab Barcelona logo"

@@ -52,17 +52,13 @@ const ProfileCard = ({
               src={defaultImage}
               alt={`Imatge del programa ${slug}`}
               className="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110"
-              style={{
-                maxHeight: '350px',
-                maxWidth: '100%',
-              }}
             />
           </div>
           
           <div className="flex-1 p-4 flex flex-col justify-between">
           <div>
-            <h1 className="text-xl font-bold mb-2">{showName}</h1>
-            {host && <span className="text-sm text-gray-600">Hosted by {host}</span>}
+            <h1 className="text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]">{showName}</h1>
+            {host && <span className="text-xs md:text-sm text-gray-600">Hosted by {host}</span>}
           </div>
           
             <div className="mt-4">

@@ -17,20 +17,20 @@ const Description = ({ description }: DescriptionProps) => {
           ${isExpanded ? '' : 'line-clamp-6'} md:line-clamp-none`}
         >
           {isHtmlObject ? (
-            // Render as HTML if it's the object type
             <div dangerouslySetInnerHTML={description} />
           ) : (
-            // Render as plain text if it's a string
             <p>{description}</p>
           )}
         </div>
-        
-        <button 
-          onClick={() => setIsExpanded(!isExpanded)} 
-          className="mt-2 text-sm font-bold text-gray-500 underline md:hidden hover:text-gray-700"
-        >
-          {isExpanded ? "Mostra menys" : "Mostra més"}
-        </button>
+        {description && description.toString().length > 300  &&
+            <button 
+            onClick={() => setIsExpanded(!isExpanded)} 
+            className="mt-2 text-sm font-bold text-gray-500 underline md:hidden hover:text-gray-700"
+          >
+            {isExpanded ? "Mostra menys" : "Mostra més"}
+          </button>
+        }
+
       </div>
     );
 }

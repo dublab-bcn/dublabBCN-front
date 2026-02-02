@@ -80,20 +80,20 @@ const RadioController = () => {
         </Button>
       </div>
       {currentShowName && (
-        <span className="">
+        <span className="text-xs md:text-base border border-slate-600 rounded-md px-3 py-1 border border-slate-600 ">
           En directe: {decodedCurrentShow}
         </span>
         )
       }
 
       {nextShowStarts ? (
-          <span className="text-white/60 hidden sm:flex ">PRÒXIM: {nextShowStarts.slice(11, 16)} {he.decode(nextShowName as string)}
+          <span className="text-gray-500 md:text-xs hidden sm:flex">PRÒXIM: {nextShowStarts.slice(11, 16)} {he.decode(nextShowName as string)}
             {nextShowHost && (
               <span>{he.decode(nextShowHost as string)}</span>
             )}
           </span>
       ) : (
-        <span>Informació no disponible...</span>
+        <span className="text-gray-500 md:text-xs hidden sm:flex rounded-md px-3 py-1">Informació no disponible...</span>
       )}
     </div>
   );

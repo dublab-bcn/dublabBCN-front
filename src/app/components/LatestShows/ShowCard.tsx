@@ -54,11 +54,11 @@ const ShowCard = ({
   const transformedHeight = parseInt(height, 10);
 
   return (
-    <article className="flex flex-col h-full">
+    <article className="group relative h-full rounded-xl overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl ">
       <div
-        className={`flex flex-col brightness-50 hover:brightness-90 group relative rounded-xl 
+        className={`flex flex-col brightness-50 hover:brightness-90 group relative
                     relative w-full aspect-square bg-gray-200
-                    overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl`}
+                    overflow-hidden transition-shadow duration-300 shadow-lg`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -85,21 +85,21 @@ const ShowCard = ({
             </Button>
           )}
       </div>
-      <ul className="flex flex-col p-4 text-black">
+      <ul className="flex flex-col pt-1 md:p-4 text-black p-2 ">
         <Link href={`/shows/${showNamePath}`} className ="mb-2">
-          <li className="mb-3 h-[14px]">
+          <li className="mb-2 h-[14px]">
             <time className="text-[12px]">{showDateforCard}</time>
           </li>
           <li>
-              <h2
-                className={`text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]`}
-              >
-                {showName}
-              </h2>
+          <h2
+            className={`text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]`}
+          >
+            {showName}
+          </h2>
             
           </li>
           <li>
-            <span className={`text-[8px] sm:text-sm leading-5`}>
+            <span className={`text-xs md:text-sm text-gray-600`}>
               {host && `Hosted by ${host}`}
             </span>
           </li>
