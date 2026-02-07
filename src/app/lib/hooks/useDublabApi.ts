@@ -110,6 +110,34 @@ const useDublabApi = () => {
     }
   };
 
+  const getPlaylistsData = async () => {
+    try {
+      const params = new URLSearchParams();      
+      params.append('search', 'clublab');  
+      const { data: clublab } = await axios.get<ApiProfilesList>(
+        `${profileDataUrl}?${params.toString()}`,
+      );      
+
+      const params2 = new URLSearchParams();     
+      params2.append('search', 'fil nocturn');  
+      const { data: fil_nocturn } = await axios.get<ApiProfilesList>(
+        `${profileDataUrl}?${params2.toString()}`,
+      );
+      
+      const result: ApiProfilesList = {
+        count: clublab.count + fil_nocturn.count,
+        next: fil_nocturn.next || clublab.next || null,
+        previous: fil_nocturn.previous || clublab.previous || null,
+        results: [...clublab.results, ...fil_nocturn.results]
+      };
+
+      return result;
+    } catch (error: unknown) {
+      const message = "profile is not currently online";
+      throw new Error(message);
+    }
+  };
+
   const getSingleShowData = async (slug: string) => {
     const { data: show } = await axios.get<RadioShow>(`${showData}${slug}`);
 
@@ -159,6 +187,7 @@ const useDublabApi = () => {
     getProfiles,
     getBsides,
     getBsideData,
+    getPlaylistsData
   };
 };
 

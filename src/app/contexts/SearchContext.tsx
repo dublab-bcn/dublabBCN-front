@@ -6,7 +6,7 @@ import getTags from '@/app/components/SearchBar/TagsLists';
 import useDublabApi from '@/app/lib/hooks/useDublabApi';
 
 interface SearchConfig {
-  type: 'shows' | 'bsides' | 'archive' | 'none';
+  type: 'shows' | 'bsides' | 'archive' | 'playlists' | 'none';
   placeholder: string;
   apiFunction: (page: number, search?: string, tags?: string) => Promise<unknown>;
 }
@@ -59,6 +59,14 @@ export function SearchProvider({ children }: { children: ReactNode }) {
       config = {
         type: 'archive',
         placeholder: 'Buscar en arxiu...',
+        apiFunction: async (page: number, search?: string, tags?: string) => {
+          return getArchivedProfiles(page, search, tags);
+        },
+      };
+    } else if (pathname === '/playlists') {
+      config = {
+        type: 'playlists',
+        placeholder: 'Buscar playlist...',
         apiFunction: async (page: number, search?: string, tags?: string) => {
           return getArchivedProfiles(page, search, tags);
         },

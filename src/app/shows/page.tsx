@@ -33,11 +33,19 @@ const ShowProfiles = async ({
   
   const allProfilesList: ApiProfile[] = [];
   
-  onAirProfiles.forEach((profilesList) => {
-    if (profilesList.results.length > 0) {
-      allProfilesList.push(...profilesList.results);
+onAirProfiles.forEach((profilesList) => {
+  if (profilesList.results.length > 0) {
+    const filteredProfiles = profilesList.results.filter(profile => {
+      const profileName = profile.name.toLowerCase() || '';
+      return !['fil nocturn', 'b-sides', 'clublab'].includes(profileName);
+    });
+    
+    // Only push if there are filtered results
+    if (filteredProfiles.length > 0) {
+      allProfilesList.push(...filteredProfiles);
     }
-  });
+  }
+});
 
   return (
     <main className="flex flex-col md:pl-[50px] md:pr-[50px] pt-[260px] md:pt-[280px] 2xl:pt-[340px] pb-16">

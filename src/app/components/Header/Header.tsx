@@ -77,7 +77,7 @@ const Header = (): React.ReactElement => {
         <NavBarS2 />
         <RadioController />
       </div>
-      {showSearch && (
+      {showSearch && searchConfig!.type !== "playlists" && (
         <SearchBar
             onSubmit={handleSearchSubmit}
             value={searchTerm}

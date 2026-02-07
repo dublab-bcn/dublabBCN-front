@@ -16,8 +16,8 @@ const RelatedShows = ({ shows }: RelatedShowsProps) => {
   const { getArchivedProfileData, getProfileData } = useDublabApi();
   const pathname = usePathname();
 
-  const lineColor: string = pathname.includes("/shows") ? "black" : "white";
-  const getterFunctionToPass = pathname.includes("/shows")
+  const lineColor: string = pathname.includes("/shows") || pathname.includes("/playlists") ? "black" : "white";
+  const getterFunctionToPass = (pathname.includes("/shows") || pathname.includes("/playlists"))
     ? getProfileData
     : getArchivedProfileData;
 
@@ -47,12 +47,6 @@ const RelatedShows = ({ shows }: RelatedShowsProps) => {
   const getTitleToShow = (showName: string, showTitle: string | undefined) => {
     if (showTitle !== "") {
       return showTitle;
-    } else if (showName === "macGuffin-20") {
-      return "Macguffin 2.0";
-    } else if (showName === "cero en conducta") {
-      return "@cero.en.conducta";
-    } else if (showName === "br") {
-      return "please come to brasil";
     } else {
       return showName;
     }

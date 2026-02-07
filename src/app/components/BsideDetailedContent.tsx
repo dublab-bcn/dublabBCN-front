@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useMixCloud } from "@/app/contexts/MixCloudContext";
 import Description from "@/app/components/Profiles/ProfileDescription";
+import ProfileLinks from "@/app/components/Profiles/ProfileLinks";
 import Image from "next/image";
 import { Menu } from '@headlessui/react';
 
@@ -11,6 +12,7 @@ interface BsideInfoProps {
   name: string;
   tags: string[];
   tracklist: string;
+  links: string[];
 }
 
 const BsideInfo = ({
@@ -19,6 +21,7 @@ const BsideInfo = ({
   name,
   tags,
   tracklist,
+  links
 }: BsideInfoProps) => {
   const { playProgram , addToQueu } = useMixCloud();
   const [isPlaying, setIsPLaying] = useState(false);
@@ -62,6 +65,7 @@ const BsideInfo = ({
         <div
             className={`w-fit md:flex sm:max-w-none mt-8 sm:gap-[5.8rem]`}
         >
+            <ProfileLinks links={links} />
             <Description description={description} />
         </div>
 

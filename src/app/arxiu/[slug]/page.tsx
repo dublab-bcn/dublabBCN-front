@@ -37,8 +37,6 @@ const ArchivedProfileDetails = async ({ params }: ProfileDetailsProps) => {
 
   const profileData = await getArchivedProfileData(params.slug);
 
-  const profileShowName = params.slug.replace(/-/g, " ");
-
   if (!profileData) return <Spinner />;
 
   const defaultImage = profileData.picture
@@ -82,7 +80,7 @@ const ArchivedProfileDetails = async ({ params }: ProfileDetailsProps) => {
             </ul>
           </div>
           <div className="w-fit">
-            <h2 className="text-5xl sm:h-[25px] mt-[25px]">{profileShowName}</h2>
+            <h2 className="text-5xl sm:h-[25px] mt-[25px]">{profileData.name}</h2>
             <ul className="flex gap-9 sm:gap-[194px] text-[32px] mt-[20px] sm:mt-[50px]">
                 <li>With</li>
                 <li className="max-w-[304px] sm:max-w-[400px]">

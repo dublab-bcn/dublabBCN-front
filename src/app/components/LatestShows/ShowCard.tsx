@@ -3,14 +3,13 @@
 import extractUrlForEmbedPlayer from "@/app/lib/extractUrlForEmbedPlayer";
 import { formatDateFromShow } from "@/app/lib/formatDateFromShows";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
-import { formatSlugToGetShowName } from "@/app/lib/processSlug";
+import { formatSlugToGetShowName, getShowNameWithoutDate } from "@/app/lib/processSlug";
 import { ApiProfile, RadioApiShow } from "@/app/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import useSWR from "swr";
 import Button from "../Button";
-import formatslugToGetPathName from "@/app/lib/formatSlugToGetPathName";
 import Tags from "@/app/components/Profiles/Tag";
 
 interface ShowCardProps {
@@ -30,7 +29,7 @@ const ShowCard = ({
   const { getProfileData } = useDublabApi();
 
   const showName = formatSlugToGetShowName(slug);
-  const showNamePath = formatslugToGetPathName(slug);
+  const showNamePath = getShowNameWithoutDate(slug);
   const showDateforCard = formatDateFromShow(date);
 
   const { data: profile } = useSWR<ApiProfile | null>(showName, getProfileData);

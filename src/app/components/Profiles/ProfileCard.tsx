@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
-import { formatSlugToGetShowName } from "@/app/lib/processSlug";
-
 import { usePathname } from "next/navigation";
 import React from "react";
 import Tags from "./Tag";
@@ -9,6 +7,7 @@ import Link from "next/link";
 
 interface Profile {
   host?: string;
+  name: string; 
   picture: string;
   tags: string[];
   slug: string;
@@ -22,7 +21,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({
-  profile: { host, picture, tags, slug },
+  profile: { host, picture, tags, slug, name },
 }: ProfileCardProps): React.ReactElement => {
   const pathname = usePathname();
   let dynamicPath;
@@ -31,13 +30,13 @@ const ProfileCard = ({
     dynamicPath = "b-sides";
   } else if (pathname === "/shows") {
     dynamicPath = "shows";
-  } else {
+  } else if (pathname === "/arxiu") {
     dynamicPath = "arxiu";
+  } else {
+    dynamicPath = "playlists"; 
   }
 
-  const isShows = dynamicPath === "shows";
-
-  const showName = formatSlugToGetShowName(slug);
+  const isShowsOrPlaylists = dynamicPath === "shows" || dynamicPath === "playlists";
 
   const changeBackgroundPath = ["/b-sides","/arxiu"].includes(pathname);
 
@@ -57,12 +56,12 @@ const ProfileCard = ({
           
           <div className="flex-1 p-4 flex flex-col justify-between">
           <div>
-            <h1 className="text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]">{showName}</h1>
+            <h1 className="text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]">{name}</h1>
             {host && <span className="text-xs md:text-sm text-gray-600">Hosted by {host}</span>}
           </div>
           
             <div className="mt-4">
-              <Tags tags={tags} isShows={isShows} />
+              <Tags tags={tags} isShows={isShowsOrPlaylists} />
             </div>
           </div>
         </div>

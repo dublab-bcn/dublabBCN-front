@@ -65,6 +65,7 @@ const BsideDetails = async ({ params }: BSideDetailsProps) => {
           name={bside.name}
           tags={bside.tags}
           tracklist={bside.tracklist}
+          links={bside.links}
         />
       </div>
 

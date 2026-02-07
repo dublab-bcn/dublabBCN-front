@@ -7,6 +7,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Button from "../Button";
 import Link from "next/link";
+import Tags from "@/app/components/Profiles/Tag";
 
 interface BsideCardProps {
   bside: Bside;
@@ -27,16 +28,15 @@ const BsideCard = ({
     onClickPlayback(showUrl!);
   };
 
-  const nameFontSize = name.length >= 45 ? "[0.8rem]" : "[1.375rem]";
-  const bottomClass = name.length > 15 ? "bottom-8" : "bottom-0";
-
   const [isHovered, setIsHovered] = useState(false);
   const transformedHeight = parseInt(height, 10);
 
   return (
-    <article className={`h-[${height}px] relative leading-[120%]`}>
+    <article className={`group relative h-full rounded-xl overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl `}>
       <div
-        className="relative brightness-50 hover:brightness-90  "
+        className="flex flex-col brightness-50 hover:brightness-90 group relative
+                    relative w-full aspect-square bg-gray-200
+                    overflow-hidden transition-shadow duration-300 shadow-lg "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -45,7 +45,7 @@ const BsideCard = ({
           alt={`Imatge del programa ${name}`}
           height={transformedHeight}
           width={353}
-          className={`h-[${height}px] w-[353px] relative object-cover brightness-50 hover:brightness-100 `}
+          className={`w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110`}
         />
         {isHovered && (
           <Button
@@ -61,26 +61,24 @@ const BsideCard = ({
           </Button>
         )}
       </div>
-      <ul className={`flex flex-col absolute p-4 text-white ${bottomClass}`}>
-        <li className="mb-3 h-[14px]">
-          <time className="text-[12px]">{showDateforCard}</time>
-        </li>
-        <li>
-          <Link href={`/b-sides/${slug}`}>
-            <h2 className={`text-${nameFontSize} h-5 max-w-[300px] pb-[40px] `}>
-              {name}
-            </h2>
-          </Link>
-        </li>
-      </ul>
-      <ul className="h-4 flex gap-[10px] text-[11px] flex-row py-4 px-4 absolute text">
-        {tags &&
-          tags.map((tag, index, array) => (
-            <>
-              <li>{tag}</li>
-              {index !== array.length - 1 && <li>&nbsp;///&nbsp;</li>}
-            </>
-          ))}
+
+      <ul className="flex flex-col pt-1 md:p-4 text-black p-2 ">
+        <Link href={`/b-sides/${slug}`} className ="mb-2">
+          <li className="mb-2 h-[14px]">
+            <time className="text-[12px]">{showDateforCard}</time>
+          </li>
+          <li>
+          <h2
+            className={`text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]`}
+          >
+            {name}
+          </h2>
+            
+          </li>
+        </Link>
+        { tags &&
+          <Tags tags={tags} isShows={true} />
+        }
       </ul>
     </article>
   );
