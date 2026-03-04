@@ -7,7 +7,7 @@ interface ResponsiveMobileProfileList {
   podcastsList: ApiProfile[] | Bside[];
 }
 
-const ResponsiveProfilesList = ({
+const ResponsivePlaylists = ({
   podcastsList
 }: ResponsiveMobileProfileList) => {
   const { isOpen } = useSlideOver();
@@ -23,4 +23,4 @@ const ResponsiveProfilesList = ({
   );
 };
 
-export default ResponsiveProfilesList;
+export default ResponsivePlaylists;

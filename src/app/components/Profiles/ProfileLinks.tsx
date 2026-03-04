@@ -31,10 +31,10 @@ const ProfileLinks = ({ links }: ProfileLinksProps) => {
           {links.map((link, index) => {
             const formattedUrl = formatLinkText(link);
             return (
-              <li className="w-[193px]" key={link}>
+              <li className="md:w-[193px]" key={link}>
                 <Link
                   target="blank"
-                  className=" block w-[193px] min-w-[193px]"
+                  className=""
                   href={link}
                 >{`${String(index + 1).padStart(
                   3,

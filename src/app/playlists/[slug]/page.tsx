@@ -42,9 +42,9 @@ const ProfileDetails = async ({ params }: ProfileDetailsProps) => {
     <main className="mt-[127px] sm:mt-[160px] 2xl:mt-[200px] p-8">
       <Link
         className="flex items-center w-full h-12 my-2 align-middle text-lg"
-        href="/shows"
+        href="/playlists"
       >
-        ← Retorna a shows
+        ← Retorna a playlists
       </Link>
       <div className="gap-[30px] sm:gap-8 flex sm:flex-row flex-col items-start justify-start">
         <Image
@@ -67,17 +67,14 @@ const ProfileDetails = async ({ params }: ProfileDetailsProps) => {
               ))}
             </ul>
           </div>
-          <div className="w-full mt-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold break-words leading-tight">
-              {profileData.name}
-            </h2>
-            
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-[194px] text-xl sm:text-[32px] mt-4 sm:mt-8 sm:items-center">
-              <span className="text-lg sm:text-xl font-medium whitespace-nowrap">With</span>
-              <p className="text-lg sm:text-2xl md:text-[32px] break-words max-w-full">
+          <div className="w-fit">
+            <h2 className="text-5xl sm:h-[25px] mt-[25px]">{profileData.name}</h2>
+            <ul className="flex gap-9 sm:gap-[194px] text-[32px] mt-[20px] sm:mt-[50px]">
+              <li>With</li>
+              <li className="max-w-[304px] sm:max-w-[400px]">
                 {profileData.host}
-              </p>
-            </div>
+              </li>
+            </ul>
           </div>
           <div
             className={`w-fit md:flex sm:max-w-none mt-8 ${

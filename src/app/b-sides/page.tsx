@@ -29,17 +29,8 @@ const BsidesList = async ({
   if (!bSidesList) return <div>Loading...</div>;
 
   return (
-    <main className="flex flex-col mt-[119px] bg-black text-white">
-      <ul className="flex flex-row gap-[376px]">
-        <li className="mt-[100px]">
-          <span className="h-[22px] px-8">COMING UP /// TODAY & TOMORROW</span>
-        </li>
-      </ul>
-      <div className="flex text-[32px] sm:text-[72px] gap-[35px] sm:gap-[140px] pt-[62px] pb-[22px] ml-8 ">
-        <span>bbb</span>
-        <h2>sides</h2>
-      </div>
-      <BsidesResponsiveProfilesList podcastsList={bSidesList} />
+    <main className="bg-black text-white flex flex-col md:pl-[50px] md:pr-[50px] pt-[260px] md:pt-[280px] 2xl:pt-[340px] pb-16">
+      <BsidesResponsiveProfilesList/>
     </main>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, ReactNode, useState, useEffect, useRef, Dispatch, SetStateAction} from "react";
+import { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction } from "react";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
 import extractUrlForEmbedPlayer from "@/app/lib/extractUrlForEmbedPlayer";
 
@@ -12,14 +12,15 @@ interface MixCloudContextType {
   MixCloud: () => void;
   play: () => void;
   playProgram: (mixcloudLink: string) => void;
-  addToQueu: (mixcloudLink: string, showName: string) => void;
-  deleteElementQueue: (id: string) => void;
+  mixcloudLink: string;
   iFrameShow: boolean;
   setIFrameShow: (value: boolean) => void;
   queu: QueuItem[];
   setQueu: Dispatch<SetStateAction<QueuItem[]>>;
+  addToQueu: (mixcloudLink: string, showName: string) => void;
   playNext: () => void;
   randomProgram: () => void;
+  deleteElementQueue: (id: string) => void;
 }
 
 const MixCloudContext = createContext<MixCloudContextType | undefined>(undefined);
@@ -27,7 +28,6 @@ const MixCloudContext = createContext<MixCloudContextType | undefined>(undefined
 export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
   const [iFrameShow, setIFrameShow] = useState(false);
   const { getLatestsShowsData } = useDublabApi();
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [queu, setQueu] = useState<QueuItem[]>([]);
   const [mixcloudLink, setMixcloudLink] = useState("");
 
@@ -39,40 +39,11 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
         setIFrameShow(true);
         return rest;
       } else {
-        setIFrameShow(false);
+        setIFrameShow(false); 
         return [];
       }
     });
   };
-
-  useEffect(() => {
-    const initWidget = () => {
-      if (!iframeRef.current || !window.Mixcloud?.PlayerWidget) return;
-      const widget = window.Mixcloud.PlayerWidget(iframeRef.current);
-      widget.ready.then(() => {
-        if (widget.events && widget.events.ended) {
-          widget.events.ended.on(() => {
-            playNext();
-          });
-        }
-      }).catch(() => {
-      });
-    };
-
-    if (!window.Mixcloud) {
-      const s = document.createElement("script");
-      s.src = "https://widget.mixcloud.com/media/js/widgetApi.js";
-      s.async = true;
-      s.onload = initWidget;
-      document.body.appendChild(s);
-      return () => {
-        s.onload = null;
-      };
-    } else {
-      initWidget();
-    }
-  }, [mixcloudLink, playNext]);
-
 
   const MixCloud = () => {
     setIFrameShow(true);
@@ -88,9 +59,8 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const randomNumberInRange = (min: number, max: number) => {
-        return Math.floor(Math.random()
-            * (max - min + 1)) + min;
-    };
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
   const randomProgram = async () => {
     const randomPage = randomNumberInRange(1, 10);
@@ -98,13 +68,16 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
     const { results: latestShows } = await getLatestsShowsData(randomPage);
     const randomShow = latestShows[randomShowIndex];
     const showUrl = extractUrlForEmbedPlayer(randomShow.mixcloud_url);
-    playProgram(showUrl);
+    
+    setMixcloudLink(showUrl);
+    setIFrameShow(true);
   };
 
   const addToQueu = (url: string, showName: string) => {
     const newItem: QueuItem = { id: url, showName: showName };
     const urlExists = queu.find((item) => item.id === url);
     if (urlExists) return;
+    
     setQueu((prev) => {
       if (!iFrameShow && prev.length === 0) {
         setMixcloudLink(newItem.id);
@@ -120,20 +93,23 @@ export const MixCloudProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <MixCloudContext.Provider value={{ MixCloud, play, playProgram, playNext, iFrameShow, setIFrameShow, queu, setQueu, addToQueu, deleteElementQueue, randomProgram }}>
+    <MixCloudContext.Provider
+      value={{
+        MixCloud,
+        play,
+        playProgram,
+        mixcloudLink,
+        playNext,
+        iFrameShow,
+        setIFrameShow,
+        queu,
+        setQueu,
+        addToQueu,
+        deleteElementQueue,
+        randomProgram,
+      }}
+    >
       {children}
-      {iFrameShow && (
-        <div id="mixcloud-player">
-          <iframe
-            ref={iframeRef}
-            title="Programa de radio seleccionat"
-            className=" w-screen fixed bottom-0 left-0 z-40"
-            height="60"
-            allow="autoplay"
-            src={`https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&autoplay=1&feed=/${mixcloudLink}`}
-          ></iframe>
-        </div>
-      )}
     </MixCloudContext.Provider>
   );
 };

@@ -1,38 +1,21 @@
 "use client";
 import { useSlideOver } from "@/app/contexts/useContexts";
-import useMobileComponent from "@/app/lib/hooks/useMobileComponent";
 import { ApiBsidesList } from "@/app/types";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import ProfilesListMobile from "../Profiles/ProfilesListMobile";
 import Spinner from "../ui/Spinner";
 import { useInView } from "react-intersection-observer";
 import { useSpinner } from "@/app/contexts/useContexts";
 import ProfilesListArchive from "./ProfilesListArchive";
 import { useState, useEffect } from "react";
 import useDublabApi from "@/app/lib/hooks/useDublabApi";
-import getTags from "@/app/components/SearchBar/TagsLists";
-import { ChangeEvent, FormEvent } from 'react'
-import SearchBar from "@/app/components/SearchBar/SearchBar";
+import { useSearch } from "@/app/contexts/SearchContext";
 
-interface ResponsiveMobileProfileList {
-  podcastsList: ApiBsidesList;
-}
-
-const BsidesResponsiveProfilesList = ({
-}: ResponsiveMobileProfileList) => {
-  const mobileComponent = useMobileComponent();
+const BsidesResponsiveProfilesList = () => {
   const { isOpen } = useSlideOver();
   const { isLoading, setIsLoading } = useSpinner();
   const { getBsides } = useDublabApi();
   
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { searchTerm, selectedTags, searchConfig } = useSearch();
   
-  const initialSearch = searchParams.get('search') || '';
-  const initialTags = searchParams.get('tags') ? searchParams.get('tags')!.split(',') : [];
-  
-  const [searchTerm, setSearchTerm] = useState(initialSearch);
-  const [selectedTags, setSelectedTags] = useState<string[]>(initialTags);
   const [podcastsList, setPodcastsList] = useState<ApiBsidesList>({
     count: 0,
     next: null,
@@ -42,9 +25,6 @@ const BsidesResponsiveProfilesList = ({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const { ref, inView } = useInView({ threshold: 1 });
-
-  const tagsClass = getTags();
-  const tags = tagsClass.Bsides;
 
   const loadMore = async () => {
     if (isLoading || !hasMore) return;
@@ -94,8 +74,10 @@ const BsidesResponsiveProfilesList = ({
       }
     };
 
-    fetchInitialData();
-  }, [searchTerm, selectedTags.join(',')]);
+    if (searchConfig?.type === 'bsides') {
+      fetchInitialData();
+    }
+  }, [searchTerm, selectedTags.join(','), searchConfig]);
 
   useEffect(() => {
     if (inView && !isLoading && hasMore) {
@@ -103,60 +85,11 @@ const BsidesResponsiveProfilesList = ({
     }
   }, [inView, isLoading]);
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleTagChange = (tags: string[]) => {
-    setSelectedTags(tags);
-  };
-
-  const handleSearchSubmit = (event?: FormEvent<HTMLFormElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
-
-    const params = new URLSearchParams();
-    
-    if (searchTerm.trim()) {
-      params.set('search', searchTerm.trim());
-    }
-    
-    if (selectedTags.length > 0) {
-      params.set('tags', selectedTags.join(','));
-    }
-    
-    router.push(`?${params.toString()}`, { scroll: false });
-  };
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      handleSearchSubmit();
-    }, 300);
-    
-    return () => clearTimeout(timeoutId);
-  }, [selectedTags, searchTerm]);
-
-
   return (
     <section>
-      <SearchBar
-        onSubmit={handleSearchSubmit}
-        value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder="Buscar bsides..."
-        tags={tags}
-        selectedTags={selectedTags}
-        onTagChange={handleTagChange}
-        version = "bsides"
-      />
       {!isOpen && (
         <>
-          {mobileComponent ? (
-            <ProfilesListMobile seasonProfiles={podcastsList!.results} />
-          ) : (
-            <ProfilesListArchive profilesOrBsides={podcastsList!.results} />
-          )}
+          <ProfilesListArchive profilesOrBsides={podcastsList!.results} />
           <div ref={ref}> {isLoading && <Spinner />}</div>
         </>
       )}

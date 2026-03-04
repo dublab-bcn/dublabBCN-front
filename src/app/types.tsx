@@ -41,10 +41,12 @@ export interface Bside {
   picture: string;
   mixcloud_url: string;
   tracklist: string;
+  links: string[];
 }
 
 export interface ApiProfile {
   id: number;
+  name: string;
   host: string;
   slug: string;
   description: string;

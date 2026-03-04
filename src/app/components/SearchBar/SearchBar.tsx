@@ -1,5 +1,6 @@
 'use client'
 import { ChangeEvent, FC, FormEvent, useState, useRef } from 'react'
+import Image from "next/image";
 
 interface SearchBarProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
@@ -36,136 +37,116 @@ const SearchBar: FC<SearchBarProps> = ({
     onTagChange(newSelectedTags)
   }
 
-  const clearAllTags = () => {
-    onTagChange([])
-  }
+  const titleMapDesktop = {
+    shows: 'Residents <br/> programs',
+    bsides: 'Guests <br/> shows',
+    archive: 'Arxiu <br/> 2016 - 2023',
+    default: 'Cerca'
+  };
 
-  const scrollTags = (direction: 'left' | 'right') => {
-    if (tagsContainerRef.current) {
-      const scrollAmount = 200
-      tagsContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      })
-    }
-  }
+  const titleMapMobile = {
+    shows: 'Residents programs',
+    bsides: 'Guests shows',
+    archive: 'Arxiu 2016 - 2023',
+    default: 'Cerca'
+  };
+
+  const titleTextDesktop = titleMapDesktop[version as keyof typeof titleMapDesktop] || titleMapDesktop.default;
+  const titleTextMobile = titleMapMobile[version as keyof typeof titleMapMobile] || titleMapMobile.default;
+
+
+  const [isTagsVisible, setIsTagsVisible] = useState(false);
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className={"mb-3 mx-auto flex w-full max-w-3xl flex-col items-center gap-3 rounded-xl border-2 border-[#EBEEF7] px-3 py-2" + (version === 'shows' ? ' bg-white' : ' bg-black')}
-    >
-      {/* Main search row */}
-      <div className="flex w-full flex-col md:flex-row gap-3">
-        <div className="ml-1 flex w-full items-center gap-3">
+    <div className={`md:h-[120px] 2xl:h-[140px] px-4 pb-4 grid grid-1 md:flex md:gap-4 ${version === 'shows' ? 'bg-white' : 'bg-black'}`}>
+      <h2 className={`hidden md:block w-64 flex-none text-2xl font-semibold mb-2 mt-4 align-middle md:pl-[50px] ${version === 'shows' ? 'text-black' : 'text-white'}`}
+        dangerouslySetInnerHTML={{ __html: titleTextDesktop }}
+      ></h2>
+      <h2 className={`block md:hidden w-64 flex-none text-xl font-semibold mb-1 mt-4 align-middle md:pl-[50px] ${version === 'shows' ? 'text-black' : 'text-white'}`}
+        dangerouslySetInnerHTML={{ __html: titleTextMobile }}
+      ></h2>
+      <form
+        onSubmit={onSubmit}
+        className={`grid grid-cols-1 md:grid-cols-8 gap-4 w-full `}
+      >
+        <div className='w-full md:px-4 mt-4 flex md:col-start-2 col-span-2'>
           <input
             type="search"
             name="search"
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={"w-full py-4 rounded-md border border-[#EBEEF7] px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#00AAFF]/20 pl-2" + (version === 'shows' ? ' bg-white' : ' bg-black')}
+            className={`h-8 pl-3 w-3/4 md:w-full rounded-md border border-[#EBEEF7] text-sm ${
+              version === 'shows' ? 'bg-white' : 'bg-black text-white'
+            }`}
           />
+
+          {tags.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setIsTagsVisible(!isTagsVisible)}
+            className={`w-1/4 md:hidden flex items-center justify-center h-8 rounded-md border border-[#EBEEF7] text-lg ${
+              version === 'shows' ? 'bg-white' : 'text-white'
+            }`}
+          >
+            <Image
+              src={version === 'shows' ? "/assets/arrow.svg" : "/assets/arrow_white.svg"}
+              width={20}
+              height={20}
+              alt={""}
+              className={`object-contain ${isTagsVisible ? 'transform rotate-180' : 'transform rotate-0'}`}
+            />
+          </button>
+          )}
         </div>
-      </div>
 
-      {/* Tags section */}
-      {tags.length > 0 && (
-        <div className="w-full">
-          {/* Scrollable tags container with navigation */}
-          <div className="flex gap-2">
-            {/* Left scroll button */}
-            <button
-              type="button"
-              onClick={() => scrollTags('left')}
-              className={"h-1/2 mt-2 z-10 rounded-full p-1 shadow-md hover:shadow-lg" + (version === 'shows' ? ' bg-white' : ' bg-black border border-white')}
-              aria-label="Scroll tags left"
-            >
-              <svg className={"w-5 h-5" + (version === 'shows' ? ' text-black' : ' text-white')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            {/* Tags container */}
-            <div
-              ref={tagsContainerRef}
-              className="flex gap-2 overflow-x-auto px-1 py-2 scrollbar-hide"
-              style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                maskImage: 'linear-gradient(to right, transparent, black 20px, black calc(100% - 10px), transparent)',
-                WebkitMaskImage: 'linear-gradient(to right, transparent, black 20px, black calc(100% - 10px), transparent)',
-              }}
-            >
-              {filteredTags.length > 0 ? (
-                filteredTags.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => handleTagClick(tag)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap ${
-                      selectedTags.includes(tag)
-                        ? (version === 'shows' ? 'bg-black text-white shadow-sm' : 'bg-white text-black shadow-sm border ')
-                        : (version === 'shows' ? 'bg-gray-100 text-gray-700 border hover:bg-gray-200' : 'bg-black text-white shadow-sm border border-white') 
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))
-              ) : (
-                <div className="text-gray-500 text-sm py-2 px-4">
-                  Cap tag "{tagFilter}"
-                </div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => scrollTags('right')}
-              className={"h-1/2 mt-2 z-10 rounded-full p-1 shadow-md hover:shadow-lg" + (version === 'shows' ? ' bg-white' : ' bg-black border border-white')}
-              aria-label="Scroll tags right"
-            >
-              <svg className={"w-5 h-5"+ (version === 'shows' ? ' text-black' : ' text-white')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 gap-2 mt-2">
-            {/* Filter input for tags */}
-            <div className="relative flex-1">
-              <input
-                type="text"
-                value={tagFilter}
-                onChange={(e) => setTagFilter(e.target.value)}
-                placeholder="Filter tags..."
-                className={"w-full rounded-md border border-[#EBEEF7] px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#00AAFF]/20" + (version === 'shows' ? ' bg-white' : ' bg-black')}
-              />
-              {tagFilter && (
-                <button
-                  type="button"
-                  onClick={() => setTagFilter('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-            
-            {/* Clear button */}
-            {selectedTags.length > 0 && (
-              <button
-                type="button"
-                onClick={clearAllTags}
-                className="text-sm text-[#00AAFF] hover:text-[#037AB6] whitespace-nowrap px-3 py-2"
+        {tags.length > 0 && (
+          <div className={`md:col-span-5 mt-4${isTagsVisible ? '' : ' hidden md:block'}`}>
+              <div
+                ref={tagsContainerRef}
+                className="flex flex-wrap gap-2 overflow-y-auto h-[6rem] 2xl:h-[7rem]
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:transparent
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
               >
-                Netejar tags ({selectedTags.length})
-              </button>
-            )}
+                <input
+                  type="text"
+                  value={tagFilter}
+                  onChange={(e) => setTagFilter(e.target.value)}
+                  placeholder="Filter tags..."
+                  className={`px-3 py-1 rounded-full h-[1.5rem] 2xl:h-[2rem] text-xs 2xl:text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap
+                    ${(version === 'shows' ? 'bg-gray-100 text-gray-700 border hover:bg-gray-200' : 'bg-black text-white shadow-sm border border-white')}`
+                  }
+                />
+                {filteredTags.length > 0 ? (
+                  filteredTags.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => handleTagClick(tag)}
+                      className={`px-3 py-1 rounded-full  h-[1.5rem] 2xl:h-[2rem] text-xs 2xl:text-sm font-medium transition-all flex-shrink-0 whitespace-nowrap ${
+                        selectedTags.includes(tag)
+                          ? (version === 'shows' ? 'bg-black text-white shadow-sm' : 'bg-white text-black shadow-sm border ')
+                          : (version === 'shows' ? 'bg-gray-100 text-gray-700 border hover:bg-gray-200' : 'bg-black text-white shadow-sm border border-white') 
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))
+                ) : (
+                  <div className="text-gray-500 text-sm py-2 px-4">
+                    Cap tag &quot;{tagFilter}&quot;
+                  </div>
+                )}
+              </div>
           </div>
-
-        </div>
-      )}
-    </form>
+        )}
+      </form>
+    </div>
   )
 }
 

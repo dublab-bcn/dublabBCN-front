@@ -33,3 +33,16 @@ export const dublabSisters: DropdownItem[] = [
   { label: "Dublab.br", route: "https://dublab.com.br/2022/" },
   { label: "Dublab.de", route: "https://dublab.de/" },
 ];
+
+export const navbarS1 = [
+  { label: "Calendari", route: "/calendari" },
+  { label: "Arxiu", route: "/arxiu" },
+  { label: "Merch", route: "https://dublabbcn.bigcartel.com/" },
+  { label: "Donate", route: "https://www.mixcloud.com/dublabes/subscribe/" },
+];
+
+export const navbarS2 = [
+  { label: "Shows", route: "/shows" },
+  { label: "BSides", route: "/b-sides" },
+  { label: "Playlists", route: "/playlists" },
+];

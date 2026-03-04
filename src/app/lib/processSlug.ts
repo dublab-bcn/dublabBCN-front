@@ -1,23 +1,31 @@
 import { RadioApiShow } from "../types";
 import extractUrlForEmbedPlayer from "@/app/lib/extractUrlForEmbedPlayer";
 
+export const extractDateFromSlug = (slug: string): string => {
+  const dateMatch = slug.match(/-(\d{2}-\d{2}-\d{2})$/);
+  return dateMatch ? dateMatch[1] : "";
+};
+
+export const getShowNameWithoutDate = (slug: string): string => {
+  return slug.replace(/-\d{2}-\d{2}-\d{2}$/, "");
+};
+
 export const formatSlugToGetShowName = (slug: string): string => {
-  if (slug.substring(0, 12) === "macguffin-20") {
-    const showIsNeus = "MacGuffin 2.0";
-    return showIsNeus;
+  const showNameWithoutDate = getShowNameWithoutDate(slug);
+  
+  if (showNameWithoutDate === "macguffin-20") {
+    return "MacGuffin 2.0";
   }
 
-  if (slug.substring(0, 16) === "cero-en-conducta") {
-    const showIsPlants = "@cero.en.conducta";
-    return showIsPlants;
+  if (showNameWithoutDate === "cero-en-conducta") {
+    return "@cero.en.conducta";
   }
 
-  if (slug.substring(0, 14) === "whenplantssing") {
-    const showIsPlants = "When...Plants...Sing";
-    return showIsPlants;
+  if (showNameWithoutDate === "whenplantssing") {
+    return "When...Plants...Sing";
   }
 
-  const showName = slug
+  const showName = showNameWithoutDate
     .replace(/-/g, " ")
     .replace(/\d/g, "")
     .replace(/'/g, "")
@@ -27,36 +35,36 @@ export const formatSlugToGetShowName = (slug: string): string => {
 };
 
 export const extractDatesForShowList = (slug: string): string => {
-  const dates = slug.match(/\d+/g);
-  return dates ? dates.join(".") : "";
+  const datePart = extractDateFromSlug(slug);
+  if (!datePart) return "";
+  
+  return datePart.replace(/-/g, ".");
 };
 
 export const extractDatesForUrl = (slug: string): string => {
   if (slug.substring(0, 4) === "6474") {
-    const showIsNumeric = "6474";
-    return showIsNumeric;
+    return "6474";
   }
 
-  if (slug.substring(0, 12) === "macguffin-20") {
-    const macGuffinDate = slug.slice(13, 21);
-    return macGuffinDate;
+  const datePart = extractDateFromSlug(slug);
+  if (datePart) {
+    return datePart;
   }
-
+  
   const dates = slug.match(/\d+/g);
   return dates ? dates.join("-") : "";
 };
 
 export const extractDatesForCard = (slug: string): string => {
-  const dates = slug.match(/\d+/g);
-  const formattedDates = dates ? dates.join("/") : "";
-
-  return formattedDates;
+  const datePart = extractDateFromSlug(slug);
+  if (!datePart) return "";
+  
+  const [day, month, year] = datePart.split("-");
+  return `${day}/${month}/${year}`;
 };
 
 const removeDateAndHyphenFromSlug = (slug: string) => {
-  const processedSlug = slug.replace(/-\d{2}-\d{2}-\d{2}$/, "");
-
-  return processedSlug;
+  return getShowNameWithoutDate(slug);
 };
 
 export const formatAndSortRelatedShowsInfo = (shows: RadioApiShow[]) => {
@@ -87,17 +95,20 @@ export const formatAndSortRelatedShowsInfo = (shows: RadioApiShow[]) => {
   });
 
   formattedShows.sort((a, b) => {
-    const dateA = `20${a.showDateForList.slice(-2)}-${a.showDateForList.slice(
-      3,
-      5
-    )}-${a.showDateForList.slice(0, 2)}`;
+    const parseDate = (dateStr: string): Date => {
+      if (!dateStr || !dateStr.includes('/')) {
+        return new Date(0);
+      }
+      
+      const [day, month, year] = dateStr.split('/').map(Number);
+      const fullYear = year < 100 ? 2000 + year : year;
+      return new Date(fullYear, month - 1, day);
+    };
 
-    const dateB = `20${b.showDateForList.slice(-2)}-${b.showDateForList.slice(
-      3,
-      5
-    )}-${b.showDateForList.slice(0, 2)}`;
+    const dateA = parseDate(a.showDateForList);
+    const dateB = parseDate(b.showDateForList);
 
-    return dateB.localeCompare(dateA);
+    return dateB.getTime() - dateA.getTime();
   });
 
   return formattedShows;

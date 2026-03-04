@@ -19,7 +19,7 @@ export const SortableQueueItem = ({ id, item }: { id: string; item: string }) =>
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="p-2 bg-gray-800 rounded mb-2 cursor-grab active:cursor-grabbing flex items-center touch-none">
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="p-2 bg-white border border-black rounded mb-2 cursor-grab active:cursor-grabbing flex items-center touch-none text-xs">
       <span className="flex-1 truncate w-[90%]">{item}</span>
       <span className="flex-none w-[10%]"> 
         <button type="button"

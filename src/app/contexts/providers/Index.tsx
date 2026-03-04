@@ -1,14 +1,16 @@
 "use client";
 
-import RadioBar from "@/app/components/RadioBar/RadioBar";
+import { Suspense } from "react";
 import AudioProvider from "../AudioContext";
 import { RadioDataProvider } from "../RadioDataContext";
 import { SpinnerProvider } from "../SpinnerContext";
 import { SlideOverProvider } from "../SlideOverContext";
 import { MixCloudProvider } from "../MixCloudContext"; 
+import { SearchProvider } from "../SearchContext";
 import Header from "@/app/components/Header/Header";
 import Footer from "@/app/components/Footer/Footer";
 import QueueDisplay from "@/app/components/MixCloudQueue/MixCloudQueu";
+import ThreeShaderOverlay from "@/app/components/Mascot/ThreeJsEnv"
 import { MascotProvider } from '@/app/contexts/MascotContext';
 import Mascot from '@/app/components/Mascot/Mascot';
 import MascotToggle from '@/app/components/Mascot/MascotToggle';
@@ -21,26 +23,29 @@ interface AppProviderprops {
 
 const AppProvider = ({ children }: AppProviderprops) => {
   return (
-    <MascotProvider>
-      <AudioProvider>
-        <SpinnerProvider>
+    <AudioProvider>
+      <SpinnerProvider>
+        <MascotProvider>
           <MixCloudProvider>
-            <RadioDataProvider>
-              <Mascot />
-              <MascotControls />  
-              <RadioBar />
-              <SlideOverProvider>
-                <Header />
-                {children}
-                <QueueDisplay />
-                <Footer />
-              </SlideOverProvider>
-            </RadioDataProvider>
+            <Suspense fallback={<div className="text-white">Loading search...</div>}>
+              <SearchProvider>
+                <ThreeShaderOverlay />
+                <Mascot />
+                <MascotControls />  
+                <RadioDataProvider>
+                  <SlideOverProvider>
+                  <Header />
+                  {children}
+                  <QueueDisplay />
+                  <Footer />
+                  </SlideOverProvider>
+                </RadioDataProvider>
+              </SearchProvider>
+            </Suspense>
           </MixCloudProvider>
-        </SpinnerProvider>
-      </AudioProvider>
-    </MascotProvider>
-    
+        </MascotProvider>
+      </SpinnerProvider>
+    </AudioProvider>
   );
 };
 

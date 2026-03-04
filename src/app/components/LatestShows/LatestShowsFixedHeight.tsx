@@ -17,29 +17,24 @@ const LatestShowsFixedHeight = ({
   };
 
   return (
-    <section className="pt-[44px] pb-16 ">
-      <ul className="flex flex-col items-center sm:px-8 sm:grid sm:grid-cols-4 w-auto sm:gap-y-14 px-4 gap-x-4 gap-12 sm:place-items-center">
-        {latestShows.map((show) => (
-          <li
+    <section className="p-4 pb-16 flex flex-col items-center sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-4 relative">
+      {latestShows.map((show) => (
+        Object.prototype.hasOwnProperty.call(show, "host") ? (
+          <ShowCard
             key={show.slug}
-            className="max-w-[353px] h-[385px] relative leading-[120%]"
-          >
-            {Object.prototype.hasOwnProperty.call(show, "host") ? (
-              <ShowCard
-                show={show}
-                height={"385"}
-                onClickPlayback={handleCardShow}
-              />
-            ) : (
-              <BsideCard
-                bside={show as Bside}
-                height={"385"}
-                onClickPlayback={handleCardShow}
-              />
-            )}
-          </li>
-        ))}
-      </ul>
+            show={show}
+            height={"385"}
+            onClickPlayback={handleCardShow}
+          />
+        ) : (
+          <BsideCard
+            key={show.slug} // Add key prop
+            bside={show as Bside}
+            height={"385"}
+            onClickPlayback={handleCardShow}
+          />
+        )
+      ))}
     </section>
   );
 };

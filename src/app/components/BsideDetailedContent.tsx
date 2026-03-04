@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
-import Button from "./Button";
-import Tracklist from "./Tracklist";
 import { useMixCloud } from "@/app/contexts/MixCloudContext";
+import Description from "@/app/components/Profiles/ProfileDescription";
+import ProfileLinks from "@/app/components/Profiles/ProfileLinks";
+import Image from "next/image";
+import { Menu } from '@headlessui/react';
 
 interface BsideInfoProps {
   showUrl: string;
@@ -10,13 +12,16 @@ interface BsideInfoProps {
   name: string;
   tags: string[];
   tracklist: string;
+  links: string[];
 }
 
 const BsideInfo = ({
   showUrl,
+  description,
   name,
   tags,
   tracklist,
+  links
 }: BsideInfoProps) => {
   const { playProgram , addToQueu } = useMixCloud();
   const [isPlaying, setIsPLaying] = useState(false);
@@ -26,60 +31,93 @@ const BsideInfo = ({
     setIsPLaying(!isPlaying);
   };
 
-  
   const addToQueueInShow = (mixcloudLink: string, showName: string) => {
     addToQueu(mixcloudLink, showName);
   };
 
+  const tracklistSplit = tracklist ? tracklist.split("\n").filter(item => item.trim() !== "") : [];
+
   return (
     <>
-      <section className="md:max-h-[700px] px-4 sm:w-[100vw] overflow-scroll scrollbar-hide sm:pr-[2rem] bg-black">
-        <div className="flex sm:flex-row flex-col  justify-between items-start sm:items-end">
-          <div className="flex gap-[20px] group">
-              <Button
-                className="uppercase flex flex-row gap-2"
-                actionOnClick={() => listenToBside(showUrl)}
+      <section className="md:overflow-y-scroll scrollbar-hide scrollbar-hide bg-black
+                          [&::-webkit-scrollbar]:hidden md:min-h-[600px] w-full">
+        <div className="flex justify-between items-end mb-8">
+          <ul className="flex gap-[10px] opacity-100 sm:opacity-40">
+            {tags.map((tag) => (
+              <li
+                key={tag}
+                className={`text-[11px] border rounded-md pt-[5px]  px-2 pb-[3px]`}
               >
-                {isPlaying ? (
-                  <div className="flex flex-row gap-1 pb-2">
-                    <div className="h-3 w-[2px] bg-white animate-moveLines" />
-                    <div className="h-3 w-[2px] bg-white animate-moveLines delay-500" />
-                    <div className="h-3 w-[2px] bg-white animate-moveLines delay-1000" />
-                  </div>
-                ) : (
-                  <span>►</span>
-                )}
-              </Button>
-              <span></span>
-              <Button
-                  className="uppercase"
-                  actionOnClick={() => addToQueueInShow(showUrl, name)}
-              >
-                + Add to queue
-              </Button>
-            <span className="loader"></span>
-          </div>
-          {tags && (
-            <ul className="flex gap-[10px] opacity-40 mr-4 sm:mr-8">
-              {tags.map((tag, index) => (
-                <li
-                  key={index}
-                  className=" text-[11px] border rounded-md pt-[5px] px-2 pb-[3px]"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          )}
+                {tag}
+              </li>
+            ))}
+          </ul>
         </div>
+
+        <hr className={`border-white  w-full `} />    
+
         <section className="w-fit">
-          <h2 className="text-5xl sm:h-[58px] mt-[56px]">
+          <h2 className="text-5xl sm:h-[25px] mt-[25px]">
             {name}
           </h2>
         </section>
-        <section className="flex-col items-end">
-          {tracklist && <Tracklist tracklist={tracklist} />}
-        </section>
+
+        <div
+            className={`w-fit md:flex sm:max-w-none mt-8 sm:gap-[5.8rem]`}
+        >
+            <ProfileLinks links={links} />
+            <Description description={description} />
+        </div>
+
+        <hr className={`border-white  w-full mt-8`} />
+
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-[17px] mb-4">
+          <section className="col-span-3 md:col-span-1 align-center text-center md:text-right grid grid-cols-3">
+            { tracklist!= undefined && tracklist.length > 0 ? (
+              <Menu as="div" className="relative flex flex-col justify-center ltr-grid">
+                <Menu.Button className = "flex flex-col items-center w-full gap-2">
+                  <Image src={"/assets/list_white.svg"}
+                  width={25.0}
+                  height={25.0}
+                  alt={"tracklist"}
+                  className="object-contain"
+                ></Image>
+                <span className="text-xs">
+                  TRACKLIST
+                </span>
+                </Menu.Button>
+                <Menu.Items className="absolute w-[85vw] md:w-[345px] left-[0px] bottom-[-20px] md:left-[0px] lg:left-[-220px] xl:left-[-200px] 2xl:left-[-70px] mb-2 z-10 border border-white divide-y divide-gray-100 rounded-md bg-black outline-none">
+                  <div className="p-4">
+                    <h3 className="text-lg font-medium mb-2">
+                      Tracklist
+                    </h3>
+                    <ol className="list-decimal list-inside max-h-60 overflow-y-auto">
+                      {tracklistSplit.map((item, index) => (
+                        <li key={index} className="text-sm">{item}</li>
+                      ))}
+                    </ol>
+                  </div>
+                </Menu.Items>
+              </Menu>) : <div></div> 
+            }
+            <button className="flex flex-col items-center justify-center w-full ltr-grid gap-2" onClick={() => addToQueueInShow(showUrl, name)}>
+              <span>+</span>
+              <span className="text-xs">
+                QUEUE
+              </span>
+            </button>
+            <button 
+              className="flex flex-col items-center justify-center w-full ltr-grid gap-2" 
+              onClick={() => listenToBside(showUrl)}
+            >
+              <span>►</span>
+              <span className="text-xs">
+                PLAY
+              </span>
+            </button>
+          </section>
+        </div>
+        <hr className={`border-white  w-full `} />    
       </section>
     </>
   );

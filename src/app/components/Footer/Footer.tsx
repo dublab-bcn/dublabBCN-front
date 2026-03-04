@@ -28,17 +28,17 @@ const Footer = (): React.ReactElement => {
           ànim de lucre.
         </span>
       </div>
-      <ul className="flex flex-col sm:flex-row  px-4 sm:px-8 pt-[57px] text-sm font-normal gap-[181px]  ">
-        <li className="w-[197px]">
+      <ul className="flex flex-col justify-start sm:flex-row  px-4 sm:px-8 pt-[57px] text-sm font-normal gap-32  ">
+        <li className="">
           <SocialLinks />
         </li>
-        <li className="w-[197px]">
+        <li className="">
           <Contact />
         </li>
-        <li className="w-[197px]">
+        <li className="">
           <LegalLinks />
         </li>
-        <li className="w-[197px]">
+        <li className="">
           <Sisters />
         </li>
         <li className="min-w-fit mt-[2px] mb-16 sm:hidden  ">
