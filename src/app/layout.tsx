@@ -2,6 +2,7 @@ import localfont from "next/font/local";
 import AppProvider from "./contexts/providers/Index";
 import "./globals.css";
 import { Metadata , Viewport } from "next";
+import { getLiveRadioData } from "./lib/hooks/useAirtimeApi";
 
 const favorit = localfont({
   src: "./fonts/Favorit_Regular_Mono.ttf",
@@ -21,11 +22,13 @@ export const metadata: Metadata = {
   description: "Pagina web de la radio comunitaria dublab BCN",
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+  const initialLiveRadioData = await getLiveRadioData();
+
   return (
     <html lang="ca">
       <body className={`${favorit.variable} font-favorit antialiased w-full overflow-x-hidden`}>
-        <AppProvider>{children}</AppProvider>
+        <AppProvider initialLiveRadioData={initialLiveRadioData}>{children}</AppProvider>
       </body>
     </html>
   );

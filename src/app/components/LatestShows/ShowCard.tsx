@@ -2,13 +2,11 @@
 "use client";
 import extractUrlForEmbedPlayer from "@/app/lib/extractUrlForEmbedPlayer";
 import { formatDateFromShow } from "@/app/lib/formatDateFromShows";
-import useDublabApi from "@/app/lib/hooks/useDublabApi";
 import { formatSlugToGetShowName, getShowNameWithoutDate } from "@/app/lib/processSlug";
-import { ApiProfile, RadioApiShow } from "@/app/types";
+import { RadioApiShow } from "@/app/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import useSWR from "swr";
 import Button from "../Button";
 import Tags from "@/app/components/Profiles/Tag";
 
@@ -17,6 +15,7 @@ interface ShowCardProps {
   listPosition?: number;
   height: string;
   onClickPlayback: (show: string) => void;
+  priority?: boolean;
 }
 
 const dublabApi = "https://api.dublab.cat";
@@ -25,28 +24,17 @@ const ShowCard = ({
   show: { slug, mixcloud_url, tags, host, profile_picture, date },
   height,
   onClickPlayback,
+  priority = false,
 }: ShowCardProps): React.ReactElement => {
-  const { getProfileData } = useDublabApi();
-
   const showName = formatSlugToGetShowName(slug);
   const showNamePath = getShowNameWithoutDate(slug);
   const showDateforCard = formatDateFromShow(date);
-
-  const { data: profile } = useSWR<ApiProfile | null>(showName, getProfileData);
 
   const showUrl = extractUrlForEmbedPlayer(mixcloud_url);
 
   const handleShowPlayback = () => {
     onClickPlayback(showUrl!);
   };
-
-  if (host === undefined || host === null) {
-    host = profile?.host;
-  }
-
-  if (tags === undefined || tags === null) {
-    tags = profile?.tags;
-  }
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -61,41 +49,42 @@ const ShowCard = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-          <Image
-            src={`${dublabApi}${profile_picture}`}
-            alt={`Imatge del programa ${showName}`}
-            height={transformedHeight}
-            width={353}
-            className={`w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110`}
-            onClick={handleShowPlayback}
-            priority={true}
-          />
-          {isHovered && (
-            <Button
-              actionOnClick={handleShowPlayback}
-              className="absolute inset-0 flex items-center justify-center "
-            >
-              <Image
-                src={"/assets/playwhite.svg"}
-                width={50}
-                height={50}
-                alt={""}
-              />
-            </Button>
-          )}
+        <Image
+          src={`${dublabApi}${profile_picture}`}
+          alt={`Imatge del programa ${showName}`}
+          height={transformedHeight}
+          width={353}
+          className={`w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110`}
+          onClick={handleShowPlayback}
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
+        />
+        {isHovered && (
+          <Button
+            actionOnClick={handleShowPlayback}
+            className="absolute inset-0 flex items-center justify-center "
+          >
+            <Image
+              src={"/assets/playwhite.svg"}
+              width={50}
+              height={50}
+              alt={""}
+            />
+          </Button>
+        )}
       </div>
       <ul className="flex flex-col pt-1 md:p-4 text-black p-2 ">
-        <Link href={`/shows/${showNamePath}`} className ="mb-2">
+        <Link href={`/shows/${showNamePath}`} className="mb-2">
           <li className="mb-2 h-[14px]">
             <time className="text-[12px]">{showDateforCard}</time>
           </li>
           <li>
-          <h2
-            className={`text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]`}
-          >
-            {showName}
-          </h2>
-            
+            <h2
+              className={`text-[1rem] leading-6 lg:text-[1.375rem] h-fit max-w-[300px]`}
+            >
+              {showName}
+            </h2>
+
           </li>
           <li>
             <span className={`text-xs md:text-sm text-gray-600`}>
@@ -103,7 +92,7 @@ const ShowCard = ({
             </span>
           </li>
         </Link>
-        { tags &&
+        {tags &&
           <Tags tags={tags} isShows={true} />
         }
       </ul>

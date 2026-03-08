@@ -18,13 +18,14 @@ const LatestShowsFixedHeight = ({
 
   return (
     <section className="p-4 pb-16 flex flex-col items-center sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-4 relative">
-      {latestShows.map((show) => (
+      {latestShows.map((show, index) => (
         Object.prototype.hasOwnProperty.call(show, "host") ? (
           <ShowCard
             key={show.slug}
-            show={show}
+            show={show as RadioApiShow}
             height={"385"}
             onClickPlayback={handleCardShow}
+            priority={index < 4}
           />
         ) : (
           <BsideCard
@@ -32,6 +33,7 @@ const LatestShowsFixedHeight = ({
             bside={show as Bside}
             height={"385"}
             onClickPlayback={handleCardShow}
+            priority={index < 4}
           />
         )
       ))}

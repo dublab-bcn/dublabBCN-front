@@ -1,13 +1,20 @@
 "use client";
-import { setCookie } from "cookies-next";
-import { useState } from "react";
+import { setCookie, getCookie } from "cookies-next";
+import { useState, useEffect } from "react";
 import Button from "./Button";
 
 const PrivacyDisclaimer = (): React.ReactElement => {
-  const [isHidden, setIsHidden] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
+
+  useEffect(() => {
+    const closed = getCookie("disclaimerClosed");
+    if (!closed) {
+      setIsHidden(false);
+    }
+  }, []);
 
   const toggleHidden = () => {
-    setIsHidden(!isHidden);
+    setIsHidden(true);
 
     setCookie("disclaimerClosed", "true", {
       maxAge: 30 * 24 * 60 * 60,

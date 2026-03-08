@@ -14,12 +14,14 @@ interface BsideCardProps {
   listPosition?: number;
   height: string;
   onClickPlayback: (show: string) => void;
+  priority?: boolean;
 }
 
 const BsideCard = ({
   bside: { name, mixcloud_url, tags, picture, date, slug },
   height,
   onClickPlayback,
+  priority = false,
 }: BsideCardProps): React.ReactElement => {
   const showDateforCard = formatBsideDate(date);
   const showUrl = extractUrlForEmbedPlayer(mixcloud_url);
@@ -46,6 +48,8 @@ const BsideCard = ({
           height={transformedHeight}
           width={353}
           className={`w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110`}
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
         />
         {isHovered && (
           <Button

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import Tags from "./Tag";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Profile {
   host?: string;
@@ -47,10 +48,13 @@ const ProfileCard = ({
       <article className="w-full h-full">
         <div className={"block group relative h-full rounded-xl overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-xl " + (changeBackgroundPath ? 'shadow-cyan-500/50' : '')}>
           <div className="relative  w-full aspect-square overflow-hidden bg-gray-200">
-            <img
+            <Image
               src={defaultImage}
               alt={`Imatge del programa ${slug}`}
               className="absolute inset-0 w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110"
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+              loading="lazy"
             />
           </div>
           

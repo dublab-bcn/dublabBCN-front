@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Script from "next/script";
 import { useMixCloud, QueuItem } from "@/app/contexts/MixCloudContext";
 import { SortableQueueItem } from "./SortableQueueItem";
 import {
@@ -34,35 +35,25 @@ const QueueDisplay = () => {
   const [toggle, setToggle] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  useEffect(() => {
-    const initWidget = () => {
-      if (!iframeRef.current || !window.Mixcloud?.PlayerWidget) return;
-      
-      const widget = window.Mixcloud.PlayerWidget(iframeRef.current);
-      
-      widget.ready
-        .then(() => {
-          if (widget.events && widget.events.ended) {
-            widget.events.ended.on(() => {
-              playNext();
-            });
-          }
-        })
-        .catch();
-    };
+  const initWidget = React.useCallback(() => {
+    if (!iframeRef.current || typeof window === 'undefined' || !window.Mixcloud?.PlayerWidget) return;
+    
+    const widget = window.Mixcloud.PlayerWidget(iframeRef.current);
+    
+    widget.ready
+      .then(() => {
+        if (widget.events && widget.events.ended) {
+          widget.events.ended.on(() => {
+            playNext();
+          });
+        }
+      })
+      .catch();
+  }, [playNext]);
 
-    if (!window.Mixcloud) {
-      const s = document.createElement("script");
-      s.src = "https://widget.mixcloud.com/media/js/widgetApi.js";
-      s.async = true;
-      s.onload = initWidget;
-      document.body.appendChild(s);
-      return () => {
-      };
-    } else {
-      initWidget();
-    }
-  }, [mixcloudLink, playNext]);
+  useEffect(() => {
+    initWidget();
+  }, [mixcloudLink, initWidget]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -109,6 +100,11 @@ const QueueDisplay = () => {
 
   return (
     <div id="queue-display-container">
+      <Script 
+        src="https://widget.mixcloud.com/media/js/widgetApi.js" 
+        strategy="lazyOnload" 
+        onLoad={initWidget}
+      />
       
       <button
         onClick={randomProgram}

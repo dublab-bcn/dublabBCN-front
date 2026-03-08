@@ -12,10 +12,10 @@ export const streamingSource = "https://dublabbcn.out.airtime.pro/dublabbcn_a";
 const RadioController = () => {
   const { getLiveRadioData } = useAirtimeApi();
 
-  const { 
-    data: LiveRadioData, 
+  const {
+    data: LiveRadioData,
     isLoading
-    } = useSWR("liveRadioData", getLiveRadioData, {
+  } = useSWR("liveRadioData", getLiveRadioData, {
     refreshInterval: 30000,
     revalidateOnFocus: true,
     dedupingInterval: 10000,
@@ -36,9 +36,9 @@ const RadioController = () => {
 
   const togglePlay = useCallback(() => {
     if (!audioRef.current) return;
-    
+
     const audio = audioRef.current;
-    
+
     if (!audio.paused) {
       audio.pause();
       setIsPlaying(false);
@@ -95,7 +95,7 @@ const RadioController = () => {
     ? he.decode(currentShowName)
     : null;
 
-  const showAsLive = currentShowName || isPlaying;
+  const showAsLive = !!currentShowName;
 
 
   if (isLoading) {
@@ -120,9 +120,9 @@ const RadioController = () => {
 
   return (
     <div className="flex gap-3 justify-between items-center pl-4 pr-4 md:pr-8 2xl:pl-[50px] flex-row bg-black text-white font-Favorit text-sm font-light uppercase py-2">
-      <div className={`flex flex-none gap-3 items-center ${!showAsLive && "w-full justify-center md:w-64 md:justify-end"}`}>
-        <audio 
-          src={streamingSource} 
+      <div className={`flex flex-none gap-3 items-center w-full justify-center md:w-64 md:justify-end`}>
+        <audio
+          src={streamingSource}
           ref={audioRef}
           preload="metadata"
           crossOrigin="anonymous"
@@ -134,7 +134,7 @@ const RadioController = () => {
             label="Català"
           />
         </audio>
-        
+
         <div className="relative">
           <Image
             className={`animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out ${showAsLive ? "animate-normal" : "animate-alternate"}`}
@@ -147,7 +147,7 @@ const RadioController = () => {
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full"></div>
           )}
         </div>
-        
+
         {showAsLive ? (
           <span className="block text-center">
             LIVE
@@ -157,7 +157,7 @@ const RadioController = () => {
             OFFLINE
           </span>
         )}
-        
+
         <Button
           actionOnClick={togglePlay}
           className="uppercase text-sm hover:opacity-80 transition-opacity"
@@ -179,16 +179,16 @@ const RadioController = () => {
         </span>
       )}
 
-        {nextShowStarts ? (
-          <span className="hidden text-gray-400 text-xs truncate sm:flex">
-            PRÒXIM: {nextShowStarts.slice(11, 16)} {he.decode(nextShowName as string)}
-            {nextShowHost && (
-              <span className="ml-1 text-gray-500">• {he.decode(nextShowHost as string)}</span>
-            )}
-          </span>
-        ) : (
-          <span className="hidden text-gray-500 text-xs sm:flex">Informació no disponible...</span>
-        )}
+      {nextShowStarts ? (
+        <span className="hidden text-gray-400 text-xs truncate sm:flex">
+          PRÒXIM: {nextShowStarts.slice(11, 16)} {he.decode(nextShowName as string)}
+          {nextShowHost && (
+            <span className="ml-1 text-gray-500">• {he.decode(nextShowHost as string)}</span>
+          )}
+        </span>
+      ) : (
+        <span className="hidden text-gray-500 text-xs sm:flex">Informació no disponible...</span>
+      )}
     </div>
   );
 };
