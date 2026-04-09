@@ -1,7 +1,7 @@
 import { LiveRadioData, WeekInfo } from "@/app/types";
 import axios from "axios";
 
-const streamingData = "https://dublabbcn.airtime.pro/api/live-info";
+const streamingData = "https://dublabbcn.airtime.pro/api/live-info-v2";
 const weekInfo = "https://dublabbcn.airtime.pro/api/week-info";
 
 let cachedData: LiveRadioData | null = null;
@@ -32,12 +32,18 @@ export const getLiveRadioData = async (): Promise<LiveRadioData> => {
       return cachedData;
     }
 
-    const { data: onAirRadio } = await axios.get<LiveRadioData>(
+    const { data: response } = await axios.get(
       streamingData,
       {
         timeout: 8000,
       }
     );
+
+    // Map v2 API response to the expected LiveRadioData format used by components
+    const onAirRadio: LiveRadioData = {
+      currentShow: response.shows.current ? [response.shows.current] : [],
+      nextShow: response.shows.next || [],
+    };
 
     cachedData = onAirRadio;
     cacheTimestamp = now;
