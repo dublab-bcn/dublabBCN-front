@@ -91,10 +91,6 @@ const RadioController = () => {
   const nextShowName = LiveRadioData?.nextShow?.[0]?.name || null;
   const nextShowHost = LiveRadioData?.nextShow?.[0]?.url || null;
 
-  const decodedCurrentShow = currentShowName
-    ? he.decode(currentShowName)
-    : null;
-
   const showAsLive = !!currentShowName;
 
 
@@ -119,9 +115,8 @@ const RadioController = () => {
   }
 
   return (
-    <div className="flex gap-3 justify-between items-center pl-4 pr-4 md:pr-8 2xl:pl-[50px] flex-row bg-black text-white font-Favorit text-sm font-light uppercase py-2">
-      <div className={`flex flex-none gap-3 items-center w-full justify-center md:w-64 md:justify-end`}>
-        <audio
+    <div className="flex flex-row gap-3 justify-center md:justify-between items-center pl-4 pr-4 md:pr-8 2xl:pl-[50px] bg-black text-white font-Favorit text-sm font-light uppercase py-2">
+      <audio
           src={streamingSource}
           ref={audioRef}
           preload="metadata"
@@ -133,9 +128,8 @@ const RadioController = () => {
             srcLang="ca"
             label="Català"
           />
-        </audio>
-
-        <div className="relative">
+      </audio>
+      <div className={`flex flex-none gap-3 items-center justify-center md:justify-end`}>
           <Image
             className={`animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out ${showAsLive ? "animate-normal" : "animate-alternate"}`}
             src={`/assets/${showAsLive ? "Ellipse_red.svg" : "Ellipse.svg"}`}
@@ -146,8 +140,6 @@ const RadioController = () => {
           {hasAudioError && (
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full"></div>
           )}
-        </div>
-
         {showAsLive ? (
           <span className="block text-center">
             LIVE
@@ -173,21 +165,21 @@ const RadioController = () => {
         </Button>
       </div>
 
-      {showAsLive && decodedCurrentShow && (
-        <span className="text-xs md:text-base border border-slate-600 rounded-md px-3 py-1 truncate max-w-[200px] lg:max-w-[300px]">
-          En directe: {decodedCurrentShow}
+      {showAsLive && currentShowName && (
+        <span className="text-xs md:text-base border border-slate-600 rounded-md px-3 py-1 md:max-w-[200px] lg:max-w-[300px]">
+          En directe: {currentShowName}
         </span>
       )}
 
       {nextShowStarts ? (
-        <span className="hidden text-gray-400 text-xs truncate sm:flex">
-          PRÒXIM: {nextShowStarts.slice(11, 16)} {he.decode(nextShowName as string)}
+        <span className={`text-gray-400 text-xs truncate ${showAsLive ? "hidden lg:flex" : "flex"} `}>
+          PRÒXIM: {nextShowStarts.slice(11, 16)} {nextShowName}
           {nextShowHost && (
             <span className="ml-1 text-gray-500">• {he.decode(nextShowHost as string)}</span>
           )}
         </span>
       ) : (
-        <span className="hidden text-gray-500 text-xs sm:flex">Informació no disponible...</span>
+        <span className="hidden text-gray-500 text-xs lg:flex">Informació no disponible...</span>
       )}
     </div>
   );
